@@ -1,12 +1,18 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-
+const cors = require("cors");
 const app = express();
 
 /* Middleware */
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+const corsOptions = {
+  origin: "http://localhost:3000",
+};
+
+app.use(cors(corsOptions));
 
 /* Routes */
 const accountsRoute = require("./routes/Accounts");
