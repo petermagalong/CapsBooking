@@ -7,6 +7,7 @@ import { Link, Route, Router, Routes, useLocation } from 'react-router-dom'
 import Reservation from './pages/Form/Reservation';
 import LogIn from './pages/LandingPage/LogIn';
 import { Container } from 'react-bootstrap';
+import SignUp from './pages/LandingPage/SignUp';
 
 function App() {
   let location = useLocation()
@@ -35,6 +36,7 @@ function App() {
         <Routes>
           <Route path="/LogIn" element={<LogIn />} />
           <Route path='/home' element={<HomePage />} />
+          <Route path="/sign-up" element={<SignUp />} />
         </Routes >
       </div>
     </>
