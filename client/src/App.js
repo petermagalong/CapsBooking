@@ -3,25 +3,19 @@ import "./pages/LandingPage/styles.css";
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import HomePage from "./pages/LandingPage/HomePage";
-import Services from './pages/LandingPage/Services';
-import { Link, Route, Router, Routes, useLocation, useRoutes } from 'react-router-dom'
+import { Link, Route, Router, Routes, useLocation } from 'react-router-dom'
 import Reservation from './pages/Form/Reservation';
+import LogIn from './pages/LandingPage/LogIn';
+import { Container } from 'react-bootstrap';
 
 function App() {
   let location = useLocation()
-  const router = useRoutes([
-    {
-      path: '/home',
-      element: <HomePage />
-    },
-    {
-      path: '/Table',
-      element: <Reservation />
-    }
-  ]);
-  console.log(location, 'location')
+  const mainPage = location.pathname.includes('/LogIn')
+
+  console.log(mainPage, 'location')
   return (
     <>
+      {/* {mainPage ? <Container /> : */}
       <Navbar className="NavbarStyle" collapseOnSelect expand="lg" variant="dark" sticky="top">
         <Navbar.Brand><img className="navbarLogo" alt='CAPS' src='images/capslogo.png' /></Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -31,13 +25,15 @@ function App() {
             <Nav.Link className="navBarItem" as={Link} to="/home">SERVICES</Nav.Link>
             <Nav.Link className="navBarItem" as={Link} to="/home">ABOUT</Nav.Link>
             <Nav.Link className="navBarItem" as={Link} to="/home">CONTACT US</Nav.Link>
-            <Nav.Link className="navBarItem" as={Link} to="/Table">LOG IN</Nav.Link>
+            <Nav.Link className="navBarItem" as={Link} to="/LogIn">LOG IN</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
+      {/* } */}
+
       <div>
         <Routes>
-          <Route path="/Table" element={<Reservation />} />
+          <Route path="/LogIn" element={<LogIn />} />
           <Route path='/home' element={<HomePage />} />
         </Routes >
       </div>
