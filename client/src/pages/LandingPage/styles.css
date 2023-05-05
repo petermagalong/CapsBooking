@@ -1,0 +1,87 @@
+/* CAROUSEL */
+.App {
+  font-family: sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  background: rgb(69,11,7);
+  background: linear-gradient(90deg, rgba(69,11,7,1) 0%, rgba(7,25,71,1) 100%);
+}
+/* APP.JS FILE */
+.NavbarStyle {
+  padding: 0px;
+  height: 12vh;
+  background-color: #061e2e;
+}
+.navBarItem {
+  font-size: 20px;
+  font-weight: 500;
+}
+.navBarItem:hover {
+  color: rgb(249, 249, 249);
+  text-shadow: 2px 2px 4px #ffe5d3;
+}
+.navbarLogo {
+  margin-left: 20px;
+  height: 80px;
+  width: 80px;
+}
+.navBarItem{
+  font-size: 20px;
+  font-weight: 500;
+}
+.navBarToggle {
+  padding-right: 40px;
+  background-color: rgba(6, 30, 46, 0.82);
+  padding: 10px;
+  justify-content: end;
+  text-align: center;
+}
+/* HOMEPAGE */
+.homePageButton{
+  width: 250px;
+  color: #0E1729;
+  background: transparent;
+  border: 1px solid #3C1220 ;
+  }
+.homePageButton:hover {
+  background-color: #3C1220 !important ;
+  border: 1px solid #3a3a38 ;
+}
+.gCDpsR{
+  margin: 50px;
+}
+.cjzNGz {
+  margin: 50px;
+}
+.eVXyLj:focus{
+  box-shadow: rgba(155, 103, 44, 0.812) 0px 0px 1px 3px !important; 
+}
+/* SERVICES */
+.Item {
+  display: flex;
+  flex-direction: column;
+}
+.CardMain {
+  border: 1px solid #908f78;
+  border-radius: 15px;
+}
+.CardImg {
+  height: 250px;
+  width: 250px;
+  border-radius: 15px;
+}
+.CardItem {
+  padding: 20px;
+  justify-content: center;
+  text-align: center;
+}
+.CardItemTitle {
+  color: white;
+  font-weight: 500;
+  padding-top: 10px;
+}
+.CardItemBody {
+  font-size: 14px;
+}
