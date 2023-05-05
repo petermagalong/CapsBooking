@@ -1,10 +1,14 @@
-import { Card } from "react-bootstrap";
+import { Card, Stack } from "react-bootstrap";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useState } from "react";
+import { Link, Route, Routes } from "react-router-dom";
+import SignUp from "./SignUp";
+
 import { loginAuth } from "../../services/accounts";
+
 
 function LogIn() {
   const initialValue = { email_address: "", password: "" }
@@ -35,7 +39,17 @@ function LogIn() {
     <>
       <Card style={{ background: 'linear-gradient(90deg, rgba(69,11,7,1) 0%, rgba(7,25,71,1) 100%)', height: '88vh' }}>
         <Row style={{ width: '100%' }}>
-          <Col>1 of 2</Col>
+          <Col style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '0px' }} >
+            <Card style={{ width: '500px', marginTop: '100px', height: '30vh', padding: '30px', display: 'flex', justifyContent: 'center' }}>
+              <h1>Dont have an account yet ?</h1>
+              <Button as={Link} to={"/sign-up"} style={{ width: '450px', height: '50px', marginTop: '20px' }} variant="primary">
+                SignUp
+              </Button>
+            </Card>
+          </Col>
+
+
+
           <Col style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '0px' }}>
             <Card style={{ width: '700px', marginTop: '100px', height: '70vh' }}>
               {Object.keys(formErrors).length === 0 && isSubmit ? (
@@ -67,6 +81,9 @@ function LogIn() {
           </Col>
         </Row>
       </Card>
+      <Routes>
+        <Route path="/sign-up" element={<SignUp />} />
+      </Routes >
     </>
   );
 }
