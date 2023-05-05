@@ -110,20 +110,45 @@ module.exports = {
       return [];
     }
   },
-  getPatientAppointment: async () => {
+  getPatientAppointment: async (params) => {
     try {
-      let query = `SELECT 
-      tbl_appointment.* ,
-      tbl_doctor.*,
-      tbl_time_slots.*
-      FROM tbl_patient 
-      INNER JOIN tbl_appointment ON tbl_patient.patientId = tbl_appointment.patient_id 
-      INNER JOIN tbl_time_slots ON tbl_appointment.time_slot = tbl_time_slots.timeSlotId
-      INNER JOIN tbl_doctor ON tbl_appointment.doctor_id  = tbl_doctor.doctorId`;
-      console.log(query, "query");
-      const result = await Connection(query);
+      const { search, filterBystatus } = params;
 
-      console.log(result);
+      let query = `SELECT tbl_appointment.* , 
+      concat (tbl_user.first_name,' ', tbl_user.middle_name ,',',tbl_user.last_name) as patient_name ,
+      concat (tbl_doctor.first_name,' ', tbl_doctor.middle_name ,',',tbl_doctor.last_name) as doctor_name,
+       tbl_doctor.specialization,
+        tbl_doctor.status,
+         tbl_time_slots.* 
+        FROM tbl_user 
+        INNER JOIN tbl_patient ON tbl_user.userId = tbl_patient.user_id 
+        INNER JOIN tbl_appointment ON tbl_patient.patientId = tbl_appointment.patient_id 
+        INNER JOIN tbl_time_slots ON tbl_appointment.time_slot = tbl_time_slots.timeSlotId 
+        INNER JOIN tbl_doctor ON tbl_appointment.doctor_id = tbl_doctor.doctorId 
+        `;
+      if (search) {
+        query += ` Where CONCAT (tbl_doctor.first_name,' ', tbl_doctor.middle_name ,' ',tbl_doctor.last_name) LIKE '%${search}%' OR 
+        CONCAT (tbl_user.first_name,' ', tbl_user.middle_name ,',',tbl_user.last_name) LIKE '%${search}%' OR 
+        tbl_appointment.appointment_date LIKE '%${search}%' 
+        OR tbl_appointment.appointment_type LIKE '%${search}%' `;
+      }
+
+      if (filterBystatus !== "all" && filterBystatus) {
+        if (!search) {
+          query += ` Where tbl_appointment.appointment_status = '${filterBystatus}'`;
+        } else {
+          query += ` AND tbl_appointment.appointment_status = '${filterBystatus}' `;
+        }
+      }
+      if (filterBystatus == "all" && search) {
+        query += ` AND tbl_appointment.appointment_status = '%${search}%' `;
+      }
+
+      query += ` ORDER BY tbl_appointment.appointment_date;`;
+
+      console.log(query);
+
+      const result = await Connection(query);
       return result;
     } catch (err) {
       return [];
