@@ -1,3 +1,8 @@
+
+::-webkit-scrollbar {
+  display: none;
+}
+
 /* CAROUSEL */
 .App {
   font-family: sans-serif;
@@ -12,7 +17,7 @@
 .NavbarStyle {
   padding: 0px;
   height: 12vh;
-  background-color: #061e2e;
+  background-color: #04061d;
 }
 .navBarItem {
   font-size: 20px;
@@ -33,7 +38,7 @@
 }
 .navBarToggle {
   padding-right: 40px;
-  background-color: rgba(6, 30, 46, 0.82);
+  background-color:  #04061d;
   padding: 10px;
   justify-content: end;
   text-align: center;
@@ -84,4 +89,16 @@
 }
 .CardItemBody {
   font-size: 14px;
+}
+/* LOGIN */
+.LogPageButton {
+  width: 350px;
+  color: #e6c78a;
+  background: transparent;
+  border: 1px solid #d5a03b ;
+  margin-top: 10px
+}
+.LogPageButton:hover{
+  background-color: #3C1220 !important ;
+  border: 1px solid #3a3a38 ;
 }
