@@ -5,7 +5,6 @@ import Navbar from 'react-bootstrap/Navbar';
 import HomePage from "./pages/LandingPage/HomePage";
 import { Link, Route, Routes, useLocation } from 'react-router-dom'
 import LogIn from './pages/LandingPage/LogIn';
-import { Container } from 'react-bootstrap';
 import SignUp from './pages/LandingPage/SignUp';
 import Users from './pages/LandingPage/Form/User';
 import UserSidebar from './components/UserSidebar';
