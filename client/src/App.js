@@ -4,7 +4,6 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import HomePage from "./pages/LandingPage/HomePage";
 import { Link, Route, Routes, useLocation } from 'react-router-dom'
-import Reservation from './pages/LandingPage/Form/Reservation';
 import LogIn from './pages/LandingPage/LogIn';
 import { Container } from 'react-bootstrap';
 import SignUp from './pages/LandingPage/SignUp';
