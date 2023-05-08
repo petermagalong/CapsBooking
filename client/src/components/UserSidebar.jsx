@@ -4,6 +4,7 @@ import { columns, sideBarData, tableData } from '../CapsConstant'
 import './userSidebar.css'
 import { Link } from 'react-router-dom'
 import UserTable from './UserTable'
+
 export default function UserSidebar() {
 
   const [isData, setData] = useState(false);
@@ -41,8 +42,6 @@ export default function UserSidebar() {
           {isData && <UserTable data={tableData} columns={columns} hover={true} striped={true} />}
         </Col>
       </Row>
-
-
     </>
   )
 }
