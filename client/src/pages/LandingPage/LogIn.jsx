@@ -51,7 +51,21 @@ function LogIn() {
 
     setFormErrors({ errorVal: data.message })
   }
+  // SAMPLE
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault()
+  //   const status = 200;
+  //   if (status === 200) {
+  //     setFormErrors({})
+  //     localStorage.setItem("userId", '200')
+  //     localStorage.setItem("role", 'patient')
+  //     localStorage.setItem("isLoggedIn", true)
+  //     console.log(status, "gg")
+  //     setIsLoggedIn(true)
+  //   }
 
+  //   // setFormErrors({ errorVal: data.message })
+  // }
   useEffect(() => {
     checkRoute()
   }, [isLoggedIn])
