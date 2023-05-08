@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Container, Table } from "react-bootstrap";
+import { Card, Container, Table } from "react-bootstrap";
 // import "./table.css";
 const UserTable = ({
   data = null,
@@ -14,8 +14,8 @@ const UserTable = ({
   };
   return (
     <div>
-      <Container>
-        <Table>
+      <Card>
+        <Table style={{ width: '80vw', height: '80vh' }}>
           <thead>
             <tr>
               {columns &&
@@ -35,7 +35,7 @@ const UserTable = ({
               ))}
           </tbody>
         </Table>
-      </Container>
+      </Card>
     </div>
   );
 };

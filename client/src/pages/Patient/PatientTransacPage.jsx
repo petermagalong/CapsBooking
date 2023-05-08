@@ -1,10 +1,12 @@
 import React from 'react'
 import UserSidebar from '../../components/UserSidebar'
+import { columns, tableData } from '../../CapsConstant'
+import UserTable from '../../components/UserTable'
 
 export default function PatientTransacPage() {
   return (
     <UserSidebar>
-      <h2>wtshit</h2>
+      <UserTable data={tableData} columns={columns} hover={true} striped={true} />
     </UserSidebar>
   )
 }

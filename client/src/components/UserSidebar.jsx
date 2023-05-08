@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { Button, Card, Col, Nav, NavLink, Navbar, Row, Stack } from 'react-bootstrap'
+import { Button, Card, Col, Container, Nav, NavLink, Navbar, Row, Stack } from 'react-bootstrap'
 import { columns, sideBarData, tableData } from '../CapsConstant'
 import { Link } from 'react-router-dom'
 import UserTable from './UserTable'
@@ -23,8 +23,7 @@ export default function UserSidebar(props) {
         </Navbar.Collapse>
       </Navbar>
       <Row>
-        <Col className="Col1"
-          style={{ height: '90vh', background: '#04061d', padding: '0px' }}
+        <Col className="Col1" style={{ height: '90vh', background: '#04061d', padding: '0px' }}
           xs={2}>
           {sideBarData.map(data => {
             if (data.role === role) {
@@ -42,8 +41,11 @@ export default function UserSidebar(props) {
             }
           })}
         </Col>
-        <Col style={{ backgroundColor: 'pink' }} xs={10}>
-          {props.children}
+        <Col style={{ height: '90vh' }} xs={10}>
+          <Card style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+            {props.children}
+          </Card>
+
           {/* {isData && <UserTable data={tableData} columns={columns} hover={true} striped={true} />} */}
         </Col>
       </Row>
