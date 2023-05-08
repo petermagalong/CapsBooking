@@ -1,14 +1,20 @@
 import React, { useCallback, useState } from 'react'
 import { Button, Card, Col, Nav, Navbar, Row, Stack } from 'react-bootstrap'
 import { sideBarData } from '../CapsConstant'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import './userSidebar.css'
 export default function UserSidebar(props) {
-
+  const navigate = useNavigate();
   const [isData, setData] = useState(false);
   const onShow = useCallback(() =>
     setData(true), []
   )
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('Login')
+  }
+
   const role = localStorage.getItem("role")
   return (
     <>
@@ -17,7 +23,7 @@ export default function UserSidebar(props) {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse className='navBarToggle' id="responsive-navbar-nav">
           <Nav >
-            <Nav.Link className='navBaritem' as={Link}>Log Out</Nav.Link>
+            <Nav.Link className='navBaritem' onClick={() => handleLogout()} >Log Out</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
