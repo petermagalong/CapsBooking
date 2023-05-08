@@ -3,50 +3,69 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 import SignUp from "./SignUp";
 import Users from "./Form/User";
 import "./styles.css";
 
 import { loginAuth } from "../../services/accounts";
+import { useNavigate } from 'react-router-dom';
 
 
 function LogIn() {
   const initialValue = { email_address: "", password: "" }
-  const [formValues, setFormvalues] = useState(initialValue);
+  const [formValues, setFormValues] = useState(initialValue);
   const [formErrors, setFormErrors] = useState({})
-  const [isSubmit, setSubmit] = useState()
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormvalues({ ...formValues, [name]: value })
-
+    setFormValues({ ...formValues, [name]: value })
   }
-  const handlesSubmit = async (e) => {
+  const checkRoute = () => {
+    const loggedIn = localStorage.getItem('isLoggedIn');
+    const role = localStorage.getItem("role")
+    setIsLoggedIn(loggedIn)
+    if (loggedIn && role === 'patient') {
+      navigate('/user');
+    }
+    if (loggedIn && role === 'nurse') {
+      navigate('/nurse');
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const { data, status } = await loginAuth(formValues)
+    console.log(data, "dataaaa")
 
-    if (status > '300') {
-      setFormErrors({ errorVal: data.message })
-    }
-    if (status < '300') {
+    if (status === 200) {
       setFormErrors({})
       localStorage.setItem("userId", data.status.userId)
       localStorage.setItem("role", data.status.role)
+      localStorage.setItem("isLoggedIn", true)
+      console.log(status, "gg")
+      setIsLoggedIn(true)
     }
 
+    setFormErrors({ errorVal: data.message })
   }
+
+  useEffect(() => {
+    checkRoute()
+  }, [isLoggedIn])
+
   return (
     <>
       <Card style={{ background: 'linear-gradient(90deg, rgba(69,11,7,1) 0%, rgba(7,25,71,1) 100%)', height: '100%', paddingBottom: '100px' }}>
         <Row style={{ width: '100%' }}>
           <Col style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '0px' }}>
             <Card style={{ width: '700px', marginTop: '100px', height: '70vh', borderRadius: '55px', background: 'linear-gradient(90deg, rgba(149,28,20,1) 0%, rgba(4,6,29,0.1881127450980392) 0%)', border: '1px solid #7e7053' }}>
-              {Object.keys(formErrors).length === 0 && isSubmit ? (
+              {Object.keys(formErrors).length === 0 && isLoggedIn ? (
                 <div className="ui message success">Signed in successfully</div>
               ) : ''}
-              <Form onSubmit={handlesSubmit} style={{ padding: ' 80px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <Form onSubmit={handleSubmit} style={{ padding: ' 80px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Form.Group style={{ width: '100%' }} className="mb-3" controlId="formBasicEmail">
                   <Form.Label style={{ fontSize: '2rem', color: '#d5a03b', display: 'flex', justifyContent: 'center' }}>Email address</Form.Label>
                   <Form.Control style={{ height: '50px' }} type="text" placeholder="Enter email" name='email_address' value={formValues.email_address || ""} onChange={handleChange} />
@@ -63,7 +82,10 @@ function LogIn() {
                 <Form.Group className="mb-3" controlId="formBasicCheckbox">
                   <Form.Check style={{ color: '#e6c78a', fontSize: '1rem' }} type="checkbox" label="Remember my credentials" />
                 </Form.Group>
-                <Button as={Link} to={"/user"} className="LogPageButton" size="lg">
+                <Button
+                  onClick={(e) => handleSubmit(e)}
+                  // as={Link} to={"/user"} 
+                  className="LogPageButton" size="lg">
                   Submit
                 </Button>
                 <p>{formErrors.errorVal}</p>
@@ -78,17 +100,13 @@ function LogIn() {
             </h4>
             <Card style={{ width: '800px', marginTop: '30px', height: '15vh', padding: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: '55px', background: 'linear-gradient(90deg, rgba(149,28,20,1) 0%, rgba(4,6,29,0.1881127450980392) 0%)', border: '1px solid #7e7053' }}>
               <h1 style={{ color: '#d5a03b', }}>Dont have an account yet ?</h1>
-              <Button as={Link} to={"/sign-up"} className="LogPageButton" variant="primary" size="lg">
+              <Button as={Link} to={"/signUp"} className="LogPageButton" variant="primary" size="lg">
                 SignUp
               </Button>
             </Card>
           </Col>
         </Row>
       </Card>
-      <Routes>
-        <Route path="/sign-up" element={<SignUp />} />
-        <Route path='/user' element={<Users />} />
-      </Routes >
     </>
   );
 }

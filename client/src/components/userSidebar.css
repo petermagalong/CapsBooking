@@ -11,3 +11,14 @@
 .usbButton:hover{
   background-color: rgb(121, 25, 25);
 }
+.navBaritem{
+  font-size: 20px;
+  font-weight: 500;
+}
+.navBarToggle {
+  padding-right: 40px;
+  background-color:  #04061d;
+  padding: 10px;
+  justify-content: end;
+  text-align: center;
+}
