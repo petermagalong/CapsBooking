@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Card, Container, Table } from "react-bootstrap";
+import { Card, Table } from "react-bootstrap";
 // import "./table.css";
 const UserTable = ({
   data = null,

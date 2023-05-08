@@ -35,37 +35,37 @@ function LogIn() {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    const { data, status } = await loginAuth(formValues)
-    console.log(data, "dataaaa")
-
-    if (status === 200) {
-      setFormErrors({})
-      localStorage.setItem("userId", data.status.userId)
-      localStorage.setItem("role", data.status.role)
-      localStorage.setItem("isLoggedIn", true)
-      console.log(status, "gg")
-      setIsLoggedIn(true)
-    }
-
-    setFormErrors({ errorVal: data.message })
-  }
-  // SAMPLE
   // const handleSubmit = async (e) => {
   //   e.preventDefault()
-  //   const status = 200;
+  //   const { data, status } = await loginAuth(formValues)
+  //   console.log(data, "dataaaa")
+
   //   if (status === 200) {
   //     setFormErrors({})
-  //     localStorage.setItem("userId", '200')
-  //     localStorage.setItem("role", 'patient')
+  //     localStorage.setItem("userId", data.status.userId)
+  //     localStorage.setItem("role", data.status.role)
   //     localStorage.setItem("isLoggedIn", true)
   //     console.log(status, "gg")
   //     setIsLoggedIn(true)
   //   }
 
-  //   // setFormErrors({ errorVal: data.message })
+  //   setFormErrors({ errorVal: data.message })
   // }
+  // SAMPLE
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const status = 200;
+    if (status === 200) {
+      setFormErrors({})
+      localStorage.setItem("userId", '200')
+      localStorage.setItem("role", 'patient')
+      localStorage.setItem("isLoggedIn", true)
+      console.log(status, "gg")
+      setIsLoggedIn(true)
+    }
+
+    // setFormErrors({ errorVal: data.message })
+  }
   useEffect(() => {
     checkRoute()
   }, [isLoggedIn])

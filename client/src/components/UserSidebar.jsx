@@ -1,8 +1,7 @@
 import React, { useCallback, useState } from 'react'
-import { Button, Card, Col, Container, Nav, NavLink, Navbar, Row, Stack } from 'react-bootstrap'
-import { columns, sideBarData, tableData } from '../CapsConstant'
+import { Button, Card, Col, Nav, Navbar, Row, Stack } from 'react-bootstrap'
+import { sideBarData } from '../CapsConstant'
 import { Link } from 'react-router-dom'
-import UserTable from './UserTable'
 import './userSidebar.css'
 export default function UserSidebar(props) {
 
