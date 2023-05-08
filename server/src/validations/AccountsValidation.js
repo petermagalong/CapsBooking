@@ -10,17 +10,22 @@ const register = Joi.object({
   birthday: Joi.string().required(),
   sex: Joi.string().valid("Male", "Female").required(),
   address: Joi.string().required(),
-  terms_and_condition: Joi.bool().required(),
+  email_address: Joi.string().email().required(),
   password: Joi.string().required(),
   contact_number: Joi.string()
     .length(11)
     .pattern(/^[0-9]+$/)
     .required(),
-  email_address: Joi.string().email().required(),
+  terms_and_condition: Joi.number()
+    .valid(1)
+    .required()
+    .messages({ "any.only": "terms and condition must be true" }),
 
   //patient
   agency: Joi.string().optional(),
-  ec_name: Joi.string().optional(),
+  ec_name: Joi.string()
+    .optional()
+    .messages({ "any.only": "Emergency Name Not allow to be enmpty" }),
   ec_contact_details: Joi.string()
     .length(11)
     .pattern(/^[0-9]+$/)
