@@ -126,6 +126,4 @@ export const columns = [
   { field: "address", header: "Address" },
   { field: "date", header: "Date" },
   { field: "status", header: "Status" },
-  { field: "results", header: "Result" },
-  { field: "log", header: "log" },
 ];

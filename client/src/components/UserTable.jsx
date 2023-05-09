@@ -14,9 +14,9 @@ const UserTable = ({
   };
   return (
     <div>
-      <Card>
-        <Table style={{ width: '80vw', height: '80vh' }}>
-          <thead>
+      <Card style={{ marginTop: '50px' }}>
+        <Table striped style={{ width: '80vw' }}>
+          <thead style={{ backgroundColor: '#3C1220 ', height: '8vh', color: 'white', justifyContent: 'center' }}>
             <tr>
               {columns &&
                 columns.map((head) => (
@@ -29,7 +29,7 @@ const UserTable = ({
               data.map((row) => (
                 <tr className={`${hover && "hover"} ${striped && "striped"}`}>
                   {columns.map((col) => (
-                    <td>{row[col.field]}</td>
+                    <td style={{ height: '60px' }}>{row[col.field]}</td>
                   ))}
                 </tr>
               ))}

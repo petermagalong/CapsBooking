@@ -14,6 +14,14 @@ import { Nav, Navbar } from "react-bootstrap";
 import PatientProfilePage from "./pages/Patient/PatientProfilePage";
 import PatientReservationPage from "./pages/Patient/PatientReservationPage";
 import PatientTransacPage from "./pages/Patient/PatientTransacPage";
+import IndexNurse from "./pages/Nurse/IndexNurse";
+import NurseHomePage from "./pages/Nurse/NurseHomePage";
+import NurseSchedulePage from "./pages/Nurse/NurseSchedulePage";
+import NurseBoardPage from "./pages/Nurse/NurseBoardPage";
+import AdminIndex from "./pages/Admin/AdminIndex";
+import AdminHomePage from "./pages/Admin/AdminHomePage";
+import AdminManagementPage from "./pages/Admin/AdminManagementPage";
+import AdminSchedulePage from "./pages/Admin/AdminSchedulePage";
 function App() {
   const [isLogged, setIsLogged] = useState(false);
   const [role, setRole] = useState("");
@@ -51,13 +59,21 @@ function App() {
         <Route path="/login" element={<LogIn />} />
         <Route path="/signUp" element={<SignUp />} />
         {/* USER */}
-
         <Route path="/user" element={<PatientProfilePage />} />
         <Route path="/user/profile" element={<PatientProfilePage />} />
         <Route path="/user/reservation" element={<PatientReservationPage />} />
         <Route path="/user/transaction-history" element={<PatientTransacPage />} />
-
-
+        {/* NURSE*/}
+        <Route path="/user" element={<NurseHomePage />} />
+        <Route path="/user/home" element={<NurseHomePage />} />
+        <Route path="/user/schedule" element={<NurseSchedulePage />} />
+        <Route path="/user/doctors-on-board" element={<NurseBoardPage />} />
+        {/* ADMIN */}
+        <Route path="/user" element={<AdminIndex />} />
+        <Route path="/user/home" element={<AdminHomePage />} />
+        <Route path="/user/schedule" element={<AdminManagementPage />} />
+        <Route path="/user/user-management" element={<AdminSchedulePage />} />
+        {/* CLERK */}
         <Route
           path="/user/*"
           // element={<Patient />}

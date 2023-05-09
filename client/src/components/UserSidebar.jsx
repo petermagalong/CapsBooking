@@ -15,7 +15,7 @@ export default function UserSidebar(props) {
     navigate('Login')
   }
 
-  const role = localStorage.getItem("role")
+  const role = 'admin'
   return (
     <>
       <Navbar className="NavbarStyle" collapseOnSelect expand="lg" variant="dark" sticky="top">
@@ -47,11 +47,9 @@ export default function UserSidebar(props) {
           })}
         </Col>
         <Col style={{ height: '90vh' }} xs={10}>
-          <Card style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+          <Card style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', height: '100%' }}>
             {props.children}
           </Card>
-
-          {/* {isData && <UserTable data={tableData} columns={columns} hover={true} striped={true} />} */}
         </Col>
       </Row>
     </>
