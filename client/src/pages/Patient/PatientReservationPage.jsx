@@ -36,31 +36,38 @@ export default function PatientReservationPage() {
   }
 
   const handleBookAppointment =async () => {
-
     const payload = {
       userId:localStorage.getItem("userId"),
       appointment_type:selectedItem,
       appointment_date:moment(value).format("YYYY-MM-DD")
     }
-
     const result =  await createPatientAppointment(payload)
     setErrorMessage(result.data)
     console.log(result)
   }
-
   return (
     <>
     <UserSidebar>
-        <Calendar
+     <Row>
+     <Col md={6}>
+      <Calendar
           className='react-calendar'
           onChange={onChange}
           value={value}
           minDate={new Date()}
           tileDisabled={({ date, view }) =>
           ((view === 'month' && date.getDay() === 0) || date.getDay() === 6)} />
-        <Button className='homePageButton' style={{marginTop: '20px', whiteSpace: 'nowrap', width: '25vw'}} variant="primary" onClick={handleShow}>
-        Set Reservation on {value.toDateString()}
+          </Col>
+      <Col md={6}>
+      <Button className='homePageButton' 
+      style={{margin: '80px 80px', whiteSpace: 'nowrap', width: '25vw', height: '100px'}} variant="primary" onClick={handleShow}>
+        <h3>Set Reservation on {value.toDateString()}</h3>
       </Button>
+      </Col>
+     </Row>
+        
+        
+       
 
       <Modal show={show} onHide={handleClose }
             aria-labelledby="contained-modal-title-vcenter"
