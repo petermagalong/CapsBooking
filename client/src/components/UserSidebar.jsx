@@ -48,7 +48,7 @@ export default function UserSidebar(props) {
           })}
         </Col>
         <Col style={{ height: '90vh' }} xs={10}>
-          <Card style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', height: '100%' }}>
+          <Card style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', height: '100%', border: 'none' }}>
             {props.children}
           </Card>
         </Col>

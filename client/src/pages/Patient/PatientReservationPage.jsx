@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import UserSidebar from '../../components/UserSidebar'
 import './patient.css'
-import { Button, Col, Dropdown, Modal, Row } from 'react-bootstrap';
+import { Button, Card, Col, Dropdown, Modal, Row, Stack } from 'react-bootstrap';
 import moment from 'moment';
 import { createPatientAppointment, getAppointmentCountByDay } from '../../services/accounts';
 import { useEffect } from 'react';
@@ -50,6 +50,8 @@ export default function PatientReservationPage() {
     <UserSidebar>
      <Row>
      <Col md={6}>
+      <Stack>
+        <h2 style={{marginTop: '80px'}}>Please select your reffered Date:</h2>
       <Calendar
           className='react-calendar'
           onChange={onChange}
@@ -57,23 +59,25 @@ export default function PatientReservationPage() {
           minDate={new Date()}
           tileDisabled={({ date, view }) =>
           ((view === 'month' && date.getDay() === 0) || date.getDay() === 6)} />
+      </Stack>
           </Col>
-      <Col md={6}>
+      <Col md={6} >
+      <Stack style={{padding: '80px 30px'}}>
       <Button className='homePageButton' 
-      style={{margin: '80px 80px', whiteSpace: 'nowrap', width: '25vw', height: '100px'}} variant="primary" onClick={handleShow}>
+      style={{ marginTop: '90px',whiteSpace: 'nowrap', width: '100%', height: '100px',}} variant="primary" onClick={handleShow}>
         <h3>Set Reservation on {value.toDateString()}</h3>
       </Button>
+      <Card>
+      </Card>
+      </Stack>
       </Col>
      </Row>
         
-        
-       
-
       <Modal show={show} onHide={handleClose }
             aria-labelledby="contained-modal-title-vcenter"
             centered>
         <Modal.Header closeButton>
-          <Modal.Title>Kingina</Modal.Title>
+          <Modal.Title>Note: <h5 style={{fontWeight: 400}}>the first to arrive will be the first to have service provided</h5> </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Row>
