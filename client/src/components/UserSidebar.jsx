@@ -15,8 +15,8 @@ export default function UserSidebar(props) {
     navigate('Login')
   }
 
-  const role = localStorage.getItem("role")
-  // const role = 'clerk'
+  // const role = localStorage.getItem("role")
+  const role = 'admin'
   return (
     <>
       <Navbar className="NavbarStyle" collapseOnSelect expand="lg" variant="dark" sticky="top">

@@ -10,11 +10,11 @@ import Patient from "./pages/LandingPage/Form/User";
 import Nurse from "./pages/User/Nurse";
 import Admin from "./pages/User/Admin";
 import Clerk from "./pages/User/Clerk";
+import IndexNurse from "./pages/Nurse/IndexNurse";
 import { Nav, Navbar } from "react-bootstrap";
 import PatientProfilePage from "./pages/Patient/PatientProfilePage";
 import PatientReservationPage from "./pages/Patient/PatientReservationPage";
 import PatientTransacPage from "./pages/Patient/PatientTransacPage";
-import IndexNurse from "./pages/Nurse/IndexNurse";
 import NurseHomePage from "./pages/Nurse/NurseHomePage";
 import NurseSchedulePage from "./pages/Nurse/NurseSchedulePage";
 import NurseBoardPage from "./pages/Nurse/NurseBoardPage";
@@ -65,27 +65,58 @@ function App() {
         <Route path="/login" element={<LogIn />} />
         <Route path="/signUp" element={<SignUp />} />
         {/* USER */}
-        <Route path="/user" element={<PatientProfilePage />} />
-        <Route path="/user/profile" element={<PatientProfilePage />} />
-        <Route path="/user/reservation" element={<PatientReservationPage />} />
-        <Route path="/user/transaction-history" element={<PatientTransacPage />} />
+        <Route path="/user"
+          element={<PatientProfilePage />}
+        />
+        <Route path="/user/profile"
+          element={<PatientProfilePage />}
+        />
+        <Route path="/user/reservation"
+          element={<PatientReservationPage />}
+        />
+        <Route path="/user/transaction-history"
+          element={<PatientTransacPage />}
+        />
+
         {/* NURSE*/}
-        <Route path="/nurse" element={<NurseHomePage />} />
-        <Route path="/nurse/home" element={<NurseHomePage />} />
-        <Route path="/nurse/schedule" element={<NurseSchedulePage />} />
-        <Route path="/nurse/doctors-on-board" element={<NurseBoardPage />} />
+        <Route path="/nurse"
+          element={<NurseHomePage />}
+        />
+        <Route path="/nurse/home"
+          element={<NurseHomePage />}
+        />
+        <Route path="/nurse/schedule"
+          element={<NurseSchedulePage />}
+        />
+        <Route path="/nurse/doctors-on-board"
+          element={<NurseBoardPage />}
+        />
         {/* ADMIN */}
-        <Route path="/admin" element={<AdminIndex />} />
-        <Route path="/admin/home" element={<AdminHomePage />} />
-        <Route path="/admin/user-management" element={<AdminManagementPage />} />
-        <Route path="//admin/schedules" element={<AdminSchedulePage />} />
+        <Route path="/admin"
+          element={<AdminHomePage />}
+        />
+        <Route path="/admin/home"
+          element={<AdminHomePage />}
+        />
+        <Route path="/admin/user-management"
+          element={<AdminManagementPage />}
+        />
+        <Route path="//admin/schedules"
+          element={<AdminSchedulePage />}
+        />
         {/* CLERK */}
-        <Route path="/clerk" element={<ClerkIndex />} />
-        <Route path="/clerk/inventory-items" element={<ClerkInventory />} />
-        <Route path="/clerk/supply" element={<ClerkSupply />} />
+        <Route path="/clerk"
+          element={<ClerkInventory />}
+        />
+        <Route path="/clerk/inventory-items"
+          element={<ClerkInventory />}
+        />
+        <Route path="/clerk/supply"
+          element={<ClerkSupply />}
+        />
 
         {/* PROTECTED ROUTES (FOR IMPLEMENTATION) */}
-        {/* <Route
+        <Route
           path="/user/*"
           // element={<Patient />}
           element={<PrivateRoute role="patient" element={<Patient />} />}
@@ -94,8 +125,8 @@ function App() {
           path="/admin/*"
           // element={<Admin />}
           element={<PrivateRoute role="admin" element={<Admin />} />}
-        /> */}
-        {/* 
+        />
+
         <Route
           path="/nurse/*"
           // element={<Nurse />}
@@ -105,7 +136,7 @@ function App() {
           path="/clerk/*"
           // element={<Clerk />}
           element={<PrivateRoute role="clerk" element={<Clerk />} />}
-        /> */}
+        />
         <Route path="*" element={homePage()} />
       </Routes>
     </>
