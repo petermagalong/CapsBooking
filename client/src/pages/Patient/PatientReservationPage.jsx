@@ -3,19 +3,50 @@ import Calendar from 'react-calendar';
 import UserSidebar from '../../components/UserSidebar'
 import './patient.css'
 import { Button, Col, Dropdown, Modal, Row } from 'react-bootstrap';
+import moment from 'moment';
+import { createPatientAppointment, getAppointmentCountByDay } from '../../services/accounts';
+import { useEffect } from 'react';
 
 
 
 export default function PatientReservationPage() {
   const [value, onChange] = useState(new Date());
   const [show, setShow] = useState(false);
+  const [slot, setSlot] = useState(0);
+
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const availability = '100'
 
   const items = ['Overseas Pre-employment', 'Complete Laboratoty Diagnostic', 'Covid-19 Testing' , 'Drug Test','X-ray']
   const [selectedItem, setSelectedItem] = useState("");
+  const [errorMessage, setErrorMessage] = useState({message:"",status:""});
+
+  useEffect(()=>{
+    checkAvailableSlot(value)
+  },[value])
+
+  const checkAvailableSlot = async (dateVal) => {
+   const appointmentDate =  moment(dateVal).format("YYYY-MM-DD")
+   if(!dateVal) return 
+    const status = await getAppointmentCountByDay({appointmentDate});
+      const result = status.data.status.reserve_patient ? 100 - parseInt(status.data.status.reserve_patient) : 100;
+    const count = result <= 0 ? 0 : result
+    setSlot(count)
+  }
+
+  const handleBookAppointment =async () => {
+
+    const payload = {
+      userId:localStorage.getItem("userId"),
+      appointment_type:selectedItem,
+      appointment_date:moment(value).format("YYYY-MM-DD")
+    }
+
+    const result =  await createPatientAppointment(payload)
+    setErrorMessage(result.data)
+    console.log(result)
+  }
 
   return (
     <>
@@ -44,7 +75,7 @@ export default function PatientReservationPage() {
           </Row>
           <Row>
             <Col style={{fontWeight: 600}} md={4}>Slot Available:</Col>
-            <Col md={4}>{availability}</Col>
+            <Col md={4}>{slot.toString()}</Col>
           </Row>
           <Row>
             <Col style={{fontWeight: 600}} md={4}>Appointment type:</Col>
@@ -66,10 +97,12 @@ export default function PatientReservationPage() {
           </Row>
         </Modal.Body>
         <Modal.Footer>
+        <p style={{ color: 'red' }}>{errorMessage.message}</p>
         {/* <Button variant="danger" onClick={handleClose}>
             Cancel
           </Button> */}
-          <Button variant="primary" onClick={handleClose}>
+          {}
+          <Button variant="primary" onClick={handleBookAppointment}>
             Save
           </Button>
         </Modal.Footer>

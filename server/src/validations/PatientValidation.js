@@ -46,9 +46,22 @@ const UpdatePatientDetails = Joi.object({
   file_path: Joi.string().optional(),
 });
 
+const createPatient = Joi.object({
+  userId: Joi.string()
+    .required()
+    .messages({ "any.only": "User Id Not allow to be empty" }),
+  appointment_type: Joi.string()
+    .required()
+    .messages({ "any.only": "Appontment Type Not allow to be enmpty" }),
+  appointment_date: Joi.string()
+    .required()
+    .messages({ "any.only": "Appointment Date Not allow to be enmpty" }),
+});
+
 module.exports.PatientValidation = {
   validateGetPatientInfo: validator(getPatientInfo),
   validateGetPatientTransaction: validator(getPatientTransaction),
   validateChangePatientPassword: validator(UpdateChangePassword),
   validateUpdatePatientDetails: validator(UpdatePatientDetails),
+  validateCreatePatientAppointment: validator(createPatient),
 };

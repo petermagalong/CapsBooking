@@ -12,6 +12,10 @@ const {
   getFormatDateToday,
   getAgeFromDate,
 } = require("../util/dateFormat");
+const {
+  getPatientAppointmentNotExist,
+  createAppointment,
+} = require("../services/patient");
 
 router.get(
   `/getUserProfile`,
@@ -37,17 +41,14 @@ router.get(
 router.get(
   `/getPatientTransactions`,
   tryCatch(async (req, res) => {
-    const { id, status, startDate, endDate } = req.query;
+    const { id, filterByStatus, startDate, endDate } = req.query;
 
     const response = await PatientService.getPatientTransactionByUserId({
       id,
-      status,
+      filterByStatus,
       startDate,
       endDate,
     });
-    if (response.length < 1) {
-      throw new AppError(false, "User not Found", 404);
-    }
 
     res.status(200).send({
       status: response,
@@ -214,6 +215,55 @@ router.get(
       message: "Success",
     });
   })
+);
+
+router.get(
+  `/getPatientsByDate`,
+  tryCatch(async (req, res) => {
+    const { reserveDate } = req.query;
+
+    const response = await PatientService.getPatientCountbyDate({
+      reserveDate,
+    });
+
+    res.status(200).send({
+      status: response,
+      message: "Success",
+    });
+  })
+);
+
+router.post(
+  `/insertPatientAppointment`,
+  tryCatch(async (req, res) => {
+    const { appointment_date, appointment_type, userId } = req.body;
+
+    const response = await PatientService.getPatient({
+      id: userId,
+    });
+
+    if (!response) throw new AppError(false, "User not Found", 404);
+
+    console.log(response);
+    const isNotExist = await getPatientAppointmentNotExist(response);
+
+    console.log(isNotExist, "isNotExist");
+    if (!isNotExist || !isNotExist?.totalNumberOfappointment)
+      throw new AppError(false, "User Already Had a Appointment.", 404);
+
+    const payload = {
+      patientId: response.patientId,
+      appointment_date,
+      appointment_type,
+    };
+    const result = await createAppointment(payload);
+    if (!result) throw new AppError(false, "Appointment Not Created.", 400);
+
+    res.status(200).send({
+      status: true,
+      message: "Success",
+    });
+  }, PatientValidation.validateCreatePatientAppointment)
 );
 
 module.exports = router;
