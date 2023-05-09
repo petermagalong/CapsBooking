@@ -199,6 +199,7 @@ module.exports = {
         file_path,
       } = params;
 
+
       const query = `UPDATE tbl_patient 
         SET 
         agency='${agency}',
