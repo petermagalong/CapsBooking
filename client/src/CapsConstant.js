@@ -120,6 +120,13 @@ export const sideBarData = [
     paths: '/user/admin'
   },
 ]
+export const columnsTransaction = [
+  { field: "transactionId", header: "Transaction ID" },
+  { field: "appointment_date", header: "Appointment Date" },
+  { field: "test", header: "Test" },
+  { field: "status", header: "Status" },
+  { field: "result", header: "Result" },
+];
 export const columns = [
   { field: "apointment", header: "Apoitment#" },
   { field: "name", header: "Name" },
@@ -127,3 +134,25 @@ export const columns = [
   { field: "date", header: "Date" },
   { field: "status", header: "Status" },
 ];
+
+                // appointment_date
+                // : 
+                // "2023-05-08T16:00:00.000Z"
+                // appointment_id
+                // : 
+                // 6
+                // date
+                // : 
+                // "2023-05-03T16:00:00.000Z"
+                // result
+                // : 
+                // "https://www.britannica.com/science/blood-biochemistry"
+                // status
+                // : 
+                // "Completed"
+                // test
+                // : 
+                // "Bloob"
+                // transactionId
+                // : 
+                // 1

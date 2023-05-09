@@ -56,9 +56,21 @@ module.exports = {
       return [];
     }
   },
+  getPatientCountbyDate: async (params) => {
+    try {
+      const { reserveDate } = params;
+
+      const query = `SELECT count(*) as reserve_patient FROM tbl_appointment where appointment_date = '${reserveDate}' LIMIT 1`;
+      const result = await Connection(query);
+
+      return result[0];
+    } catch (err) {
+      return 0;
+    }
+  },
   getPatientTransactionByUserId: async (params) => {
     try {
-      const { id, status, startDate, endDate } = params;
+      const { id, filterByStatus, startDate, endDate } = params;
 
       let query = `SELECT 
       tbl_appointment.appointment_date, 
@@ -69,8 +81,11 @@ module.exports = {
       INNER JOIN tbl_transaction ON tbl_transaction.appointment_id = tbl_appointment.appointmentId 
       where tbl_user.userId = '${id}'`;
 
-      if (status && status !== "all") {
-        query = query.concat(" ", `AND tbl_transaction.status = ${status}`);
+      if (filterByStatus !== undefined && filterByStatus !== "All") {
+        query = query.concat(
+          " ",
+          `AND tbl_transaction.status = '${filterByStatus}'`
+        );
       }
       if (startDate && endDate) {
         query = query.concat(
@@ -78,7 +93,7 @@ module.exports = {
           `AND tbl_transaction.date BETWEEN  '${startDate}' AND '${endDate}'`
         );
       }
-
+      query = query.concat(" ", `ORDER BY tbl_transaction.date ASC`);
       console.log(query);
       const result = await Connection(query);
 
@@ -251,6 +266,45 @@ module.exports = {
         ...totalNumberOfPending[0],
         ...totalNumberOfCompleted[0],
       };
+    } catch (err) {
+      return false;
+    }
+  },
+
+  getPatientAppointmentNotExist: async (payload) => {
+    try {
+      const patientPendingQuery = `Select count(*) as total_pending from  tbl_patient 
+                                  INNER JOIN tbl_appointment 
+                                  ON tbl_appointment.patient_id = tbl_patient.patientId
+                                  Where tbl_appointment.appointment_status =  'pending' 
+                                  AND tbl_appointment.patient_id =  '${payload.patientId}' 
+                                  Limit 1
+                                  `;
+
+      const totalNumberOfappointment = await Connection(patientPendingQuery);
+
+      return {
+        totalNumberOfappointment:
+          totalNumberOfappointment[0].total_pending > 0 ? false : true,
+      };
+    } catch (err) {
+      return false;
+    }
+  },
+  createAppointment: async (payload) => {
+    try {
+      const patientPendingQuery = `INSERT INTO tbl_appointment
+      (appointmentId, appointment_date, patient_id, doctor_id,
+         appointment_type, code, appointment_status) 
+      VALUES ('',
+            '${payload.appointment_date}',
+            '${payload.patientId}',
+            null,
+            '${payload.appointment_type}','','pending')
+      `;
+      await Connection(patientPendingQuery);
+
+      return true;
     } catch (err) {
       return false;
     }
