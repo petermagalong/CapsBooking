@@ -22,24 +22,30 @@ import AdminIndex from "./pages/Admin/AdminIndex";
 import AdminHomePage from "./pages/Admin/AdminHomePage";
 import AdminManagementPage from "./pages/Admin/AdminManagementPage";
 import AdminSchedulePage from "./pages/Admin/AdminSchedulePage";
+import ClerkIndex from "./pages/Clerk/ClerkIndex";
+import ClerkInventory from "./pages/Clerk/ClerkInventory";
+import ClerkSupply from "./pages/Clerk/ClerkSupply";
 function App() {
+  let location = useLocation()
+  const userPage = location.pathname.includes('/user')
+  const nursePage = location.pathname.includes('/nurse')
+  const adminPage = location.pathname.includes('/admin')
+  const clerkPage = location.pathname.includes('/clerk')
   const [isLogged, setIsLogged] = useState(false);
   const [role, setRole] = useState("");
   const isLoggedin = () => {
     const userId = localStorage.getItem("userId");
-
     setRole(role);
     setIsLogged(userId ? true : false);
   };
-
   useEffect(() => {
     isLoggedin();
   }, []);
-  let location = useLocation()
-  const mainPage = location.pathname.includes('/user')
+  console.log(userPage)
+
   return (
     <>
-      {mainPage ? "" :
+      {userPage || nursePage || adminPage || clerkPage ? "" :
         <Navbar className="NavbarStyle" collapseOnSelect expand="lg" variant="dark" sticky="top">
           <Navbar.Brand><img className="navbarLogo" alt='CAPS' src='images/capslogo.png' /></Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -64,47 +70,44 @@ function App() {
         <Route path="/user/reservation" element={<PatientReservationPage />} />
         <Route path="/user/transaction-history" element={<PatientTransacPage />} />
         {/* NURSE*/}
-        <Route path="/user" element={<NurseHomePage />} />
-        <Route path="/user/home" element={<NurseHomePage />} />
-        <Route path="/user/schedule" element={<NurseSchedulePage />} />
-        <Route path="/user/doctors-on-board" element={<NurseBoardPage />} />
+        <Route path="/nurse" element={<NurseHomePage />} />
+        <Route path="/nurse/home" element={<NurseHomePage />} />
+        <Route path="/nurse/schedule" element={<NurseSchedulePage />} />
+        <Route path="/nurse/doctors-on-board" element={<NurseBoardPage />} />
         {/* ADMIN */}
-        <Route path="/user" element={<AdminIndex />} />
-        <Route path="/user/home" element={<AdminHomePage />} />
-        <Route path="/user/schedule" element={<AdminManagementPage />} />
-        <Route path="/user/user-management" element={<AdminSchedulePage />} />
+        <Route path="/admin" element={<AdminIndex />} />
+        <Route path="/admin/home" element={<AdminHomePage />} />
+        <Route path="/admin/user-management" element={<AdminManagementPage />} />
+        <Route path="//admin/schedules" element={<AdminSchedulePage />} />
         {/* CLERK */}
-        <Route
+        <Route path="/clerk" element={<ClerkIndex />} />
+        <Route path="/clerk/inventory-items" element={<ClerkInventory />} />
+        <Route path="/clerk/supply" element={<ClerkSupply />} />
+
+        {/* PROTECTED ROUTES (FOR IMPLEMENTATION) */}
+        {/* <Route
           path="/user/*"
           // element={<Patient />}
           element={<PrivateRoute role="patient" element={<Patient />} />}
         />
-
-
         <Route
           path="/admin/*"
           // element={<Admin />}
           element={<PrivateRoute role="admin" element={<Admin />} />}
-        />
-
-
+        /> */}
+        {/* 
         <Route
           path="/nurse/*"
           // element={<Nurse />}
           element={<PrivateRoute role="nurse" element={<Nurse />} />}
         />
-
-
         <Route
           path="/clerk/*"
           // element={<Clerk />}
           element={<PrivateRoute role="clerk" element={<Clerk />} />}
-        />
-
-
+        /> */}
         <Route path="*" element={homePage()} />
       </Routes>
-      {/* <Link to={"/user"}>gg</Link> */}
     </>
   );
 }

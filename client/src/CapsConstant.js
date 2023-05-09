@@ -72,15 +72,15 @@ export const sideBarData = [
     links: [
       {
         name: "Home",
-        path: '/user/home'
+        path: '/nurse/home'
       },
       {
         name: 'Schedule',
-        path: '/user/schedule'
+        path: '/nurse/schedule'
       },
       {
         name: 'Doctor on Board',
-        path: '/user/doctors-on-board'
+        path: '/nurse/doctors-on-board'
       }
     ],
 
@@ -91,29 +91,29 @@ export const sideBarData = [
     links: [
       {
         name: "Inventory Items",
-        path: '/inventory-items'
+        path: '/clerk/inventory-items'
       },
       {
         name: 'Supply',
-        path: '/user/supply'
+        path: '/clerk/supply'
       },
     ],
-    paths: '/user/clerk'
+    paths: '/clerk'
   },
   {
     role: "admin",
     links: [
       {
         name: "Homes",
-        path: '/user/home'
+        path: '/admin/home'
       },
       {
         name: 'User Management',
-        path: '/user/user-management'
+        path: '/admin/user-management'
       },
       {
         name: 'Schedules',
-        path: '/user/schedules'
+        path: '/admin/schedules'
       }
     ],
 
