@@ -12,7 +12,7 @@ export default function SignUp() {
     contact_number: "",
     role: "patient",
     birthday: "",
-    sex: "male",
+    sex: "Male",
     address: "",
     agency: "",
     type_of_id: "",
@@ -243,7 +243,8 @@ export default function SignUp() {
               <Col>
                 <h5 style={{ color: 'white' }}>Type of ID:</h5>
                 <Form.Control style={{ height: '50px' }} type="text" name='type_of_id' value={formValues.type_of_id} onChange={handleChange} />
-                <p style={{ color: 'red' }}>{formErrors.typeid}</p>
+                <p style={{ color: 'red' }}>{formErrors.type_of_id
+                }</p>
               </Col>
               <Col>
                 <h5 style={{ color: 'white' }}>ID Number:</h5>

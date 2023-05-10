@@ -71,7 +71,7 @@ export const getPatientTransaction = async ({
   // console.log(payload, `payloadgetPatientDetails?id=${payload.id}`);
   console.log({ userId, startDate, endDate, filterByStatus }, "useridmoto");
   let path = `patients/getPatientTransactions?id=${userId}`;
-  
+
   if (startDate !== "" && endDate !== "" && startDate <= endDate) {
     path += `&startDate=${startDate}&endDate=${endDate}`;
   }
@@ -85,6 +85,28 @@ export const getPatientTransaction = async ({
     userId,
     startDate,
     endDate,
+    filterByStatus,
+  });
+
+  console.log(data.data, "dd");
+
+  return data;
+};
+
+export const getPatientsAppointments = async ({
+  search = "",
+  filterByStatus = "All",
+}) => {
+  // console.log(payload, `payloadgetPatientDetails?id=${payload.id}`);
+  let path = `/nurse/getPatientsAppointment?filterBystatus=${filterByStatus}`;
+
+  if (search !== "") {
+    path += `&search=${search}`;
+  }
+
+  console.log(path, "pathpathpathpathpathpathpathpathpathpath");
+  const data = await fetchData(`${path}`, "get", {
+    search,
     filterByStatus,
   });
 

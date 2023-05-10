@@ -41,7 +41,7 @@ router.get(
       status: result,
       message: "Success",
     });
-  }, PatientValidation.validateGetgetPatientsAppointment)
+  })
 );
 
 module.exports = router;

@@ -1,9 +1,9 @@
 export const Role = {
-  Admin: 'admin',
-  Patient: 'patient',
-  Nurse: 'nurse',
-  Clerk: 'clerk'
-}
+  Admin: "admin",
+  Patient: "patient",
+  Nurse: "nurse",
+  Clerk: "clerk",
+};
 export const tableData = [
   {
     apointment: 1,
@@ -54,72 +54,72 @@ export const sideBarData = [
     links: [
       {
         name: "Profile",
-        path: '/user/profile'
+        path: "/user/profile",
       },
       {
-        name: 'Reservation',
-        path: '/user/reservation'
+        name: "Reservation",
+        path: "/user/reservation",
       },
       {
-        name: 'Transaction History',
-        path: '/user/transaction-history'
-      }
+        name: "Transaction History",
+        path: "/user/transaction-history",
+      },
     ],
-    paths: '/patient'
+    paths: "/patient",
   },
   {
     role: "nurse",
     links: [
       {
         name: "Home",
-        path: '/nurse/home'
+        path: "/nurse/home",
       },
       {
-        name: 'Schedule',
-        path: '/nurse/schedule'
+        name: "Schedule",
+        path: "/nurse/schedule",
       },
       {
-        name: 'Doctor on Board',
-        path: '/nurse/doctors-on-board'
-      }
+        name: "Doctor on Board",
+        path: "/nurse/doctors-on-board",
+      },
     ],
 
-    paths: '/nurse'
+    paths: "/nurse",
   },
   {
     role: "clerk",
     links: [
       {
         name: "Inventory Items",
-        path: '/clerk/inventory-items'
+        path: "/clerk/inventory-items",
       },
       {
-        name: 'Supply',
-        path: '/clerk/supply'
+        name: "Supply",
+        path: "/clerk/supply",
       },
     ],
-    paths: '/clerk'
+    paths: "/clerk",
   },
   {
     role: "admin",
     links: [
       {
         name: "Homes",
-        path: '/admin/home'
+        path: "/admin/home",
       },
       {
-        name: 'User Management',
-        path: '/admin/user-management'
+        name: "User Management",
+        path: "/admin/user-management",
       },
       {
-        name: 'Schedules',
-        path: '/admin/schedules'
-      }
+        name: "Schedules",
+        path: "/admin/schedules",
+      },
     ],
 
-    paths: '/user/admin'
+    paths: "/user/admin",
   },
-]
+];
 export const columnsTransaction = [
   { field: "transactionId", header: "Transaction ID" },
   { field: "appointment_date", header: "Appointment Date" },
@@ -134,25 +134,11 @@ export const columns = [
   { field: "date", header: "Date" },
   { field: "status", header: "Status" },
 ];
-
-                // appointment_date
-                // : 
-                // "2023-05-08T16:00:00.000Z"
-                // appointment_id
-                // : 
-                // 6
-                // date
-                // : 
-                // "2023-05-03T16:00:00.000Z"
-                // result
-                // : 
-                // "https://www.britannica.com/science/blood-biochemistry"
-                // status
-                // : 
-                // "Completed"
-                // test
-                // : 
-                // "Bloob"
-                // transactionId
-                // : 
-                // 1
+export const Appointmentcolumns = [
+  { field: "appointmentId", header: "Apoitment No" },
+  { field: "appointment_date", header: "Appointment Date" },
+  { field: "patient_name", header: "Patient Name" },
+  { field: "appointment_type", header: "Test" },
+  { field: "appointment_status", header: "Status" },
+  { field: "doctor_name", header: "Doctor" },
+];

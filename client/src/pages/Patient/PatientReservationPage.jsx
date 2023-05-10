@@ -72,7 +72,6 @@ export default function PatientReservationPage() {
       </Stack>
       </Col>
      </Row>
-        
       <Modal show={show} onHide={handleClose }
             aria-labelledby="contained-modal-title-vcenter"
             centered>

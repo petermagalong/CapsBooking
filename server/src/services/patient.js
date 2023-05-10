@@ -73,7 +73,7 @@ module.exports = {
       const { id, filterByStatus, startDate, endDate } = params;
 
       let query = `SELECT 
-      tbl_appointment.appointment_date, 
+      DATE_FORMAT(tbl_appointment.appointment_date,'%Y-%m-%d') as appointment_date, 
       tbl_transaction.*
       FROM tbl_user 
       INNER JOIN tbl_patient  ON tbl_user.userId = tbl_patient.user_id 
@@ -90,7 +90,7 @@ module.exports = {
       if (startDate && endDate) {
         query = query.concat(
           " ",
-          `AND tbl_transaction.date BETWEEN  '${startDate}' AND '${endDate}'`
+          `AND STR_TO_DATE(tbl_transaction.date) BETWEEN STR_TO_DATE('${startDate}', '%Y-%m-%d') AND STR_TO_DATE('${endDate}', '%Y-%m-%d') `
         );
       }
       query = query.concat(" ", `ORDER BY tbl_transaction.date ASC`);
@@ -110,10 +110,8 @@ module.exports = {
       let query = `SELECT 
       tbl_appointment.* ,
       tbl_doctor.*,
-      tbl_time_slots.*
       FROM tbl_patient 
       INNER JOIN tbl_appointment ON tbl_patient.patientId = tbl_appointment.patient_id 
-      INNER JOIN tbl_time_slots ON tbl_appointment.time_slot = tbl_time_slots.timeSlotId
       INNER JOIN tbl_doctor ON tbl_appointment.doctor_id  = tbl_doctor.doctorId
       where tbl_patient.patientId = '${id}';`;
       console.log(query, "query");
@@ -129,37 +127,39 @@ module.exports = {
     try {
       const { search, filterBystatus } = params;
 
-      let query = `SELECT tbl_appointment.* , 
-      concat (tbl_user.first_name,' ', tbl_user.middle_name ,',',tbl_user.last_name) as patient_name ,
-      concat (tbl_doctor.first_name,' ', tbl_doctor.middle_name ,',',tbl_doctor.last_name) as doctor_name,
-       tbl_doctor.specialization,
+      let query =
+        // `SELECT tbl_appointment.* ,
+
+        ` SELECT  tbl_appointment.*,
+        CONCAT(tbl_doctor.first_name, ' ', tbl_doctor.middle_name, ',', tbl_doctor.last_name) as doctor_name,
+        tbl_doctor.specialization,
         tbl_doctor.status,
-         tbl_time_slots.* 
-        FROM tbl_user 
-        INNER JOIN tbl_patient ON tbl_user.userId = tbl_patient.user_id 
-        INNER JOIN tbl_appointment ON tbl_patient.patientId = tbl_appointment.patient_id 
-        INNER JOIN tbl_time_slots ON tbl_appointment.time_slot = tbl_time_slots.timeSlotId 
-        INNER JOIN tbl_doctor ON tbl_appointment.doctor_id = tbl_doctor.doctorId 
-        `;
-      if (search) {
-        query += ` Where CONCAT (tbl_doctor.first_name,' ', tbl_doctor.middle_name ,' ',tbl_doctor.last_name) LIKE '%${search}%' OR 
-        CONCAT (tbl_user.first_name,' ', tbl_user.middle_name ,',',tbl_user.last_name) LIKE '%${search}%' OR 
-        tbl_appointment.appointment_date LIKE '%${search}%' 
-        OR tbl_appointment.appointment_type LIKE '%${search}%' `;
+        CONCAT(tbl_user.first_name, ' ', tbl_user.middle_name, ' ', tbl_user.last_name) AS patient_name
+        FROM tbl_user
+        INNER JOIN tbl_patient ON tbl_user.userId = tbl_patient.user_id
+        INNER JOIN tbl_appointment ON tbl_patient.patientId = tbl_appointment.patient_id
+        INNER JOIN tbl_doctor ON tbl_doctor.doctorId = tbl_appointment.doctor_id `;
+
+      if (filterBystatus && filterBystatus !== "All") {
+        query += ` Where tbl_appointment.appointment_status = '${filterBystatus}' `;
       }
 
-      if (filterBystatus !== "all" && filterBystatus) {
-        if (!search) {
-          query += ` Where tbl_appointment.appointment_status = '${filterBystatus}'`;
-        } else {
-          query += ` AND tbl_appointment.appointment_status = '${filterBystatus}' `;
-        }
-      }
-      if (filterBystatus == "all" && search) {
-        query += ` AND tbl_appointment.appointment_status = '%${search}%' `;
+      if (search && search !== "" && filterBystatus === "All") {
+        query += ` WHERE CONCAT(tbl_user.first_name, ' ', tbl_user.middle_name, ' ', tbl_user.last_name) LIKE '%${search}%' 
+         OR CONCAT(tbl_doctor.first_name, ' ', tbl_doctor.middle_name, ',', tbl_doctor.last_name) LIKE '%${search}%' 
+         OR tbl_appointment.appointment_type LIKE '%${search}%' OR tbl_appointment.appointment_date LIKE '%${search}%' 
+         OR tbl_appointment.appointmentId  LIKE '%${search}%' 
+         OR tbl_appointment.appointment_status LIKE '%${search}%' 
+         ORDER BY tbl_appointment.appointment_date DESC ;`;
       }
 
-      query += ` ORDER BY tbl_appointment.appointment_date;`;
+      if (search && search !== "" && filterBystatus !== "All") {
+        query += ` AND (CONCAT(tbl_user.first_name, ' ', tbl_user.middle_name, ' ', tbl_user.last_name) LIKE '%${search}%' 
+         OR CONCAT(tbl_doctor.first_name, ' ', tbl_doctor.middle_name, ',', tbl_doctor.last_name) LIKE '%${search}%' 
+         OR tbl_appointment.appointment_type LIKE '%${search}%' OR tbl_appointment.appointment_date LIKE '%${search}%' 
+         OR tbl_appointment.appointmentId  LIKE '%${search}%')
+         ORDER BY tbl_appointment.appointment_date DESC ;`;
+      }
 
       console.log(query);
 
@@ -169,6 +169,7 @@ module.exports = {
       return [];
     }
   },
+
   changePassword: async (params) => {
     try {
       const { id, password } = params;

@@ -36,7 +36,6 @@ export default function PatientTransacPage() {
   const handleChange = (e) => {
     const { value } = e.target;
     setFilterByStatus(value)
-    
   }
 
   useEffect(()=>{
