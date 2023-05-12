@@ -114,3 +114,25 @@ export const getPatientsAppointments = async ({
 
   return data;
 };
+
+export const getActiveDoctors = async () => {
+  // console.log(payload, `payloadgetPatientDetails?id=${payload.id}`);
+  let path = `/doctor/getActiveDoctors`;
+
+  const data = await fetchData(`${path}`, "get");
+
+  console.log(data.data, "dd");
+
+  return data;
+};
+
+export const getPatientsAppointment = async (userId) => {
+  // console.log(payload, `payloadgetPatientDetails?id=${payload.id}`);
+  let path = `/patients/getPatientsAppointmentDetails?userId=${userId}`;
+
+  const data = await fetchData(`${path}`, "get");
+
+  console.log(data.data, "dduck");
+
+  return data;
+};

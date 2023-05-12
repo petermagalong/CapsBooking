@@ -4,7 +4,7 @@ import UserSidebar from '../../components/UserSidebar'
 import './patient.css'
 import { Button, Card, Col, Dropdown, Modal, Row, Stack } from 'react-bootstrap';
 import moment from 'moment';
-import { createPatientAppointment, getAppointmentCountByDay } from '../../services/accounts';
+import { createPatientAppointment, getAppointmentCountByDay, getPatientsAppointment } from '../../services/accounts';
 import { useEffect } from 'react';
 
 
@@ -13,7 +13,8 @@ export default function PatientReservationPage() {
   const [value, onChange] = useState(new Date());
   const [show, setShow] = useState(false);
   const [slot, setSlot] = useState(0);
-
+  const [getPatientAppointment,setgetPatientAppointment] = useState({status:[]})
+  const [appointmentCrete,setAppointmentcreate] = useState(false)
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -23,8 +24,15 @@ export default function PatientReservationPage() {
   const [errorMessage, setErrorMessage] = useState({message:"",status:""});
 
   useEffect(()=>{
+    getAppointment()
     checkAvailableSlot(value)
-  },[value])
+  },[value,appointmentCrete])
+
+  const getAppointment =async () => {
+    const uerId = localStorage.getItem("userId")
+    const result = await getPatientsAppointment(uerId)
+    setgetPatientAppointment(result.data)
+  }
 
   const checkAvailableSlot = async (dateVal) => {
    const appointmentDate =  moment(dateVal).format("YYYY-MM-DD")
@@ -43,8 +51,16 @@ export default function PatientReservationPage() {
     }
     const result =  await createPatientAppointment(payload)
     setErrorMessage(result.data)
+    if(result.data.status === true){
+      setAppointmentcreate(true)
+      handleClose()
+    }
     console.log(result)
   }
+  const tileDisabled = () => {
+    return true;
+  };
+  console.log(getPatientAppointment,"getPatientAppointment.length")
   return (
     <>
     <UserSidebar>
@@ -57,16 +73,37 @@ export default function PatientReservationPage() {
           onChange={onChange}
           value={value}
           minDate={new Date()}
-          tileDisabled={({ date, view }) =>
-          ((view === 'month' && date.getDay() === 0) || date.getDay() === 6)} />
+          // tileDisabled={tileDisabled}
+          tileDisabled={getPatientAppointment?.status.length > 0 ? tileDisabled : ({ date, view }) =>
+          ((view === 'month' && date.getDay() === 0) || date.getDay() === 6)} 
+          />
       </Stack>
           </Col>
       <Col md={6} >
       <Stack style={{padding: '80px 30px'}}>
       <Button className='homePageButton' 
-      style={{ marginTop: '90px',whiteSpace: 'nowrap', width: '100%', height: '100px',}} variant="primary" onClick={handleShow}>
-        <h3>Set Reservation on {value.toDateString()}</h3>
+      style={{ marginTop: '90px',whiteSpace: 'nowrap', width: '100%', height: '100px',}} 
+      variant="primary" onClick={handleShow} 
+      disabled={getPatientAppointment?.status.length > 0}>
+       {
+          getPatientAppointment?.status?.length && getPatientAppointment.status.length > 0 ? (
+            <h3>Reserve on {getPatientAppointment.status[0].appointment_date}</h3>
+          ) : (
+            <h3>Set Reservation on {value.toDateString()}</h3>
+          )
+        }
       </Button>
+      {
+            getPatientAppointment?.status && getPatientAppointment?.status.length > 0 ? (
+              <>
+              Note: <h5 style={{fontWeight: 400}}>the first to arrive will be the first to have service provided</h5>
+              <p>Reserve Date : {getPatientAppointment.status[0].appointment_date}</p>
+              <p>Appointment Type : {getPatientAppointment.status[0].appointment_type}</p>
+              <p>Appointment Status : {getPatientAppointment.status[0].appointment_status}</p>
+              </>
+            ) : ""
+          }
+
       <Card>
       </Card>
       </Stack>
@@ -115,6 +152,7 @@ export default function PatientReservationPage() {
           <Button variant="primary" onClick={handleBookAppointment}>
             Save
           </Button>
+
         </Modal.Footer>
       </Modal>
       </UserSidebar>

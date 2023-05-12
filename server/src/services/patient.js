@@ -68,6 +68,31 @@ module.exports = {
       return 0;
     }
   },
+  getPatientOngoingAppointment: async (params) => {
+    try {
+      const { userId } = params;
+
+      const query = `SELECT 
+      DATE_FORMAT(tbl_appointment.appointment_date,'%Y-%m-%d') as appointment_date, 
+      appointment_type,
+      code,
+      appointment_status 
+      FROM tbl_appointment
+      Inner join tbl_patient 
+      On tbl_appointment.patient_id = tbl_patient.patientId 
+      where tbl_patient.user_id = '${userId}' 
+      and tbl_appointment.appointment_status != 'completed' 
+      and tbl_appointment.appointment_status != 'canceled'
+       LIMIT 1`;
+
+      console.log(query);
+      const result = await Connection(query);
+
+      return result;
+    } catch (err) {
+      return [];
+    }
+  },
   getPatientTransactionByUserId: async (params) => {
     try {
       const { id, filterByStatus, startDate, endDate } = params;
@@ -303,6 +328,11 @@ module.exports = {
             null,
             '${payload.appointment_type}','','pending')
       `;
+
+      console.log(
+        patientPendingQuery,
+        "patientPendingQuerypatientPendingQuery"
+      );
       await Connection(patientPendingQuery);
 
       return true;

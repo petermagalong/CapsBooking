@@ -257,6 +257,7 @@ router.post(
       appointment_type,
     };
     const result = await createAppointment(payload);
+    console.log(result, "ggresult");
     if (!result) throw new AppError(false, "Appointment Not Created.", 400);
 
     res.status(200).send({
@@ -264,6 +265,22 @@ router.post(
       message: "Success",
     });
   }, PatientValidation.validateCreatePatientAppointment)
+);
+
+router.get(
+  `/getPatientsAppointmentDetails`,
+  tryCatch(async (req, res) => {
+    const { userId } = req.query;
+
+    const response = await PatientService.getPatientOngoingAppointment({
+      userId,
+    });
+
+    res.status(200).send({
+      status: response,
+      message: "Success",
+    });
+  })
 );
 
 module.exports = router;

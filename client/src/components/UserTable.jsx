@@ -19,17 +19,17 @@ const UserTable = ({
           <thead style={{ backgroundColor: '#3C1220 ', height: '8vh', color: 'white', justifyContent: 'center' }}>
             <tr>
               {columns &&
-                columns.map((head) => (
-                  <th>{getCaps(head.header, head.field)}</th>
+                columns.map((head,index1) => (
+                  <th key={index1} >{getCaps(head.header, head.field)}</th>
                 ))}
             </tr>
           </thead>
           <tbody>
             {data && data.length > 0 ?
-              (data.map((row) => (
-                <tr key={row} className={`${hover && "hover"} ${striped && "striped"}`}>
-                  {columns.map((col) => (
-                    <td style={{ height: '60px' }} key={col}>{row[col.field]}</td>
+              (data.map((row,index2) => (
+                <tr key={index2+row+'asd'} className={`${hover && "hover"} ${striped && "striped"}`}>
+                  {columns.map((col,index) => (
+                    <td style={{ height: '60px' }} key={index}>{row[col.field]}</td>
                   ))}
                 </tr>
               ))) : ''
