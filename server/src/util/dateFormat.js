@@ -46,6 +46,20 @@ function getAge(dateString) {
   return userAge;
 }
 
+function getAgeFromDate(dateString) {
+  const today = new Date();
+  const birthDate = new Date(dateString);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && today.getDate() < birthDate.getDate())
+  ) {
+    age--;
+  }
+  return age;
+}
+
 const getDateToday = () => {
   const today = new Date();
   const yyyy = today.getFullYear();
@@ -57,8 +71,21 @@ const getDateToday = () => {
 
   return yyyy + "-" + mm + "-" + dd;
 };
+const getFormatDateToday = (dateVal) => {
+  const today = new Date(dateVal);
+  const yyyy = today.getFullYear();
+  let mm = today.getMonth() + 1; // Months start at 0!
+  let dd = today.getDate();
+
+  if (dd < 10) dd = "0" + dd;
+  if (mm < 10) mm = "0" + mm;
+
+  return `${yyyy}-${mm}-${dd}`;
+};
 
 module.exports = {
   getAge,
   getDateToday,
+  getFormatDateToday,
+  getAgeFromDate,
 };

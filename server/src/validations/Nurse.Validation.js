@@ -6,7 +6,7 @@ const validator = (schema) => (payload) => schema.validate(payload);
 const getPatientsAppointment = Joi.object({
   search: Joi.string().optional().default(""),
   filterBystatus: Joi.string()
-    .valid("all", "pending", "ongoing", "completed")
+    .valid("All", "Pending", "Ongoing", "Completed")
     .required()
     .default("all"),
 });

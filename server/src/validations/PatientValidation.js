@@ -22,16 +22,40 @@ const UpdateChangePassword = Joi.object({
 
 const UpdatePatientDetails = Joi.object({
   id: Joi.string().required(),
-  agency: Joi.string().required(),
-  ec_name: Joi.string().required(),
+  first_name: Joi.string().optional(),
+  middle_name: Joi.string().optional(),
+  last_name: Joi.string().optional(),
+  role: Joi.string().optional(),
+  birthday: Joi.string().optional(),
+  sex: Joi.string().valid("Male", "Female").optional(),
+  address: Joi.string().optional(),
+  terms_and_condition: Joi.boolean().optional(),
+  contact_number: Joi.string()
+    .length(11)
+    .pattern(/^[0-9]+$/)
+    .optional(),
+  agency: Joi.string().optional(),
+  ec_name: Joi.string().optional(),
   ec_contact_details: Joi.string()
     .length(11)
     .pattern(/^[0-9]+$/)
     .optional(),
-  ec_address: Joi.string().required(),
-  type_of_id: Joi.string().required(),
-  id_number: Joi.string().required(),
-  file_path: Joi.string().required(),
+  ec_address: Joi.string().optional(),
+  type_of_id: Joi.string().optional(),
+  id_number: Joi.string().optional(),
+  file_path: Joi.string().optional(),
+});
+
+const createPatient = Joi.object({
+  userId: Joi.string()
+    .required()
+    .messages({ "any.only": "User Id Not allow to be empty" }),
+  appointment_type: Joi.string()
+    .required()
+    .messages({ "any.only": "Appontment Type Not allow to be enmpty" }),
+  appointment_date: Joi.string()
+    .required()
+    .messages({ "any.only": "Appointment Date Not allow to be enmpty" }),
 });
 
 module.exports.PatientValidation = {
@@ -39,4 +63,5 @@ module.exports.PatientValidation = {
   validateGetPatientTransaction: validator(getPatientTransaction),
   validateChangePatientPassword: validator(UpdateChangePassword),
   validateUpdatePatientDetails: validator(UpdatePatientDetails),
+  validateCreatePatientAppointment: validator(createPatient),
 };

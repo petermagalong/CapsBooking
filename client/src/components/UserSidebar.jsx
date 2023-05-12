@@ -1,16 +1,22 @@
 import React, { useCallback, useState } from 'react'
-import { Button, Card, Col, Nav, NavLink, Navbar, Row, Stack } from 'react-bootstrap'
-import { columns, sideBarData, tableData } from '../CapsConstant'
-import { Link } from 'react-router-dom'
-import UserTable from './UserTable'
+import { Button, Card, Col, Nav, Navbar, Row, Stack } from 'react-bootstrap'
+import { sideBarData } from '../CapsConstant'
+import { Link, useNavigate } from 'react-router-dom'
 import './userSidebar.css'
 export default function UserSidebar(props) {
-
+  const navigate = useNavigate();
   const [isData, setData] = useState(false);
   const onShow = useCallback(() =>
     setData(true), []
   )
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('Login')
+  }
+
   const role = localStorage.getItem("role")
+  // const role = 'admin'
   return (
     <>
       <Navbar className="NavbarStyle" collapseOnSelect expand="lg" variant="dark" sticky="top">
@@ -18,13 +24,12 @@ export default function UserSidebar(props) {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse className='navBarToggle' id="responsive-navbar-nav">
           <Nav >
-            <Nav.Link className='navBaritem' as={Link}>Log Out</Nav.Link>
+            <Nav.Link className='navBaritem' onClick={() => handleLogout()} >Log Out</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
       <Row>
-        <Col className="Col1"
-          style={{ height: '90vh', background: '#04061d', padding: '0px' }}
+        <Col className="Col1" style={{ height: '90vh', background: '#04061d', padding: '0px' }}
           xs={2}>
           {sideBarData.map(data => {
             if (data.role === role) {
@@ -42,9 +47,10 @@ export default function UserSidebar(props) {
             }
           })}
         </Col>
-        <Col style={{ backgroundColor: 'pink' }} xs={10}>
-          {props.children}
-          {/* {isData && <UserTable data={tableData} columns={columns} hover={true} striped={true} />} */}
+        <Col style={{ height: '90vh' }} xs={10}>
+          <Card style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', height: '100%', border: 'none' }}>
+            {props.children}
+          </Card>
         </Col>
       </Row>
     </>

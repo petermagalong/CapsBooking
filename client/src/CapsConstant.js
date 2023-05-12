@@ -1,9 +1,9 @@
 export const Role = {
-  Admin: 'admin',
-  Patient: 'patient',
-  Nurse: 'nurse',
-  Clerk: 'clerk'
-}
+  Admin: "admin",
+  Patient: "patient",
+  Nurse: "nurse",
+  Clerk: "clerk",
+};
 export const tableData = [
   {
     apointment: 1,
@@ -54,78 +54,96 @@ export const sideBarData = [
     links: [
       {
         name: "Profile",
-        path: '/user/profile'
+        path: "/user/profile",
       },
       {
-        name: 'Reservation',
-        path: '/user/reservation'
+        name: "Reservation",
+        path: "/user/reservation",
       },
       {
-        name: 'Transaction History',
-        path: '/user/transaction-history'
-      }
+        name: "Transaction History",
+        path: "/user/transaction-history",
+      },
     ],
-    paths: '/patient'
+    paths: "/patient",
   },
   {
     role: "nurse",
     links: [
       {
         name: "Home",
-        path: '/user/home'
+        path: "/nurse/home",
       },
       {
-        name: 'Schedule',
-        path: '/user/schedule'
+        name: "Schedule",
+        path: "/nurse/schedule",
       },
       {
-        name: 'Doctor on Board',
-        path: '/user/doctors-on-board'
-      }
+        name: "Doctor on Board",
+        path: "/nurse/doctors-on-board",
+      },
     ],
 
-    paths: '/nurse'
+    paths: "/nurse",
   },
   {
     role: "clerk",
     links: [
       {
         name: "Inventory Items",
-        path: '/inventory-items'
+        path: "/clerk/inventory-items",
       },
       {
-        name: 'Supply',
-        path: '/user/supply'
+        name: "Supply",
+        path: "/clerk/supply",
       },
     ],
-    paths: '/user/clerk'
+    paths: "/clerk",
   },
   {
     role: "admin",
     links: [
       {
         name: "Homes",
-        path: '/user/home'
+        path: "/admin/home",
       },
       {
-        name: 'User Management',
-        path: '/user/user-management'
+        name: "User Management",
+        path: "/admin/user-management",
       },
       {
-        name: 'Schedules',
-        path: '/user/schedules'
-      }
+        name: "Schedules",
+        path: "/admin/schedules",
+      },
     ],
 
-    paths: '/user/admin'
+    paths: "/user/admin",
   },
-]
+];
+export const columnsTransaction = [
+  { field: "transactionId", header: "Transaction ID" },
+  { field: "appointment_date", header: "Appointment Date" },
+  { field: "test", header: "Test" },
+  { field: "status", header: "Status" },
+  { field: "result", header: "Result" },
+];
 export const columns = [
   { field: "apointment", header: "Apoitment#" },
   { field: "name", header: "Name" },
   { field: "address", header: "Address" },
   { field: "date", header: "Date" },
   { field: "status", header: "Status" },
-  { field: "results", header: "Result" },
-  { field: "log", header: "log" },
+];
+export const Appointmentcolumns = [
+  { field: "appointmentId", header: "Apoitment No" },
+  { field: "appointment_date", header: "Appointment Date" },
+  { field: "patient_name", header: "Patient Name" },
+  { field: "appointment_type", header: "Test" },
+  { field: "appointment_status", header: "Status" },
+  { field: "doctor_name", header: "Doctor" },
+];
+
+export const Doctorscolumns = [
+  { field: "doctor_name", header: "Doctors Name" },
+  { field: "specialization", header: "Specialization" },
 ];
