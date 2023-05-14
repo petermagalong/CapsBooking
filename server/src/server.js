@@ -26,6 +26,7 @@ app.use("/patients", patientsRoute);
 app.use("/nurse", nurseRoute);
 app.use("/doctor", doctorRoute);
 
+app.use("/uploads", express.static("uploads"));
 app.use(errorHandler);
 const port = 3001;
 

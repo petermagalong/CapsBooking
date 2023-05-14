@@ -52,3 +52,22 @@ export async function fetchData(url, method, payload) {
     console.log(error.message);
   }
 }
+
+export async function fetchformData(url, method, payload) {
+  for (let pair of payload.entries()) {
+    console.log(pair[0], pair[1]);
+  }
+  try {
+    const data = await makeRequest({
+      url,
+      method,
+      data: payload,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return data;
+  } catch (error) {
+    console.log(error.message);
+  }
+}

@@ -1,7 +1,28 @@
 const Connection = require("../database/Connection");
 const { getUserId } = require("./user");
+const fs = require("fs");
 
 module.exports = {
+  //POST
+  changePassword: async (params) => {
+    try {
+      const { id, password } = params;
+
+      const query =
+        `UPDATE ` +
+        `tbl_user ` +
+        `SET ` +
+        ` password = '${password}' ` +
+        `WHERE ` +
+        `userId = ${id}`;
+
+      await Connection(query);
+
+      return true;
+    } catch (err) {
+      return false;
+    }
+  },
   registerPatient: async (params) => {
     try {
       const {
@@ -40,6 +61,32 @@ module.exports = {
       return false;
     }
   },
+  createAppointment: async (payload) => {
+    try {
+      const patientPendingQuery = `INSERT INTO tbl_appointment
+      (appointmentId, appointment_date, patient_id, doctor_id,
+         appointment_type, code, appointment_status) 
+      VALUES ('',
+            '${payload.appointment_date}',
+            '${payload.patientId}',
+            null,
+            '${payload.appointment_type}','','pending')
+      `;
+
+      console.log(
+        patientPendingQuery,
+        "patientPendingQuerypatientPendingQuery"
+      );
+      await Connection(patientPendingQuery);
+
+      return true;
+    } catch (err) {
+      return false;
+    }
+  },
+
+  //GET
+
   getPatientInfoByUserId: async (params) => {
     try {
       const { id } = params;
@@ -49,6 +96,7 @@ module.exports = {
       INNER JOIN tbl_patient
       ON tbl_user.userId=tbl_patient.user_id 
       where tbl_user.userId = '${id}' limit 1`;
+      console.log(query);
       const result = await Connection(query);
 
       return result;
@@ -195,25 +243,6 @@ module.exports = {
     }
   },
 
-  changePassword: async (params) => {
-    try {
-      const { id, password } = params;
-
-      const query =
-        `UPDATE ` +
-        `tbl_user ` +
-        `SET ` +
-        ` password = '${password}' ` +
-        `WHERE ` +
-        `userId = ${id}`;
-
-      await Connection(query);
-
-      return true;
-    } catch (err) {
-      return false;
-    }
-  },
   getPatient: async (params) => {
     try {
       const { id } = params;
@@ -223,37 +252,6 @@ module.exports = {
       const result = await Connection(query);
 
       return result[0];
-    } catch (err) {
-      return false;
-    }
-  },
-  updatePatientDetails: async (params) => {
-    try {
-      const {
-        user_id,
-        agency,
-        ec_name,
-        ec_contact_details,
-        ec_address,
-        type_of_id,
-        id_number,
-        file_path,
-      } = params;
-
-      const query = `UPDATE tbl_patient 
-        SET 
-        agency='${agency}',
-        ec_name='${ec_name}',
-        ec_contact_details='${ec_contact_details}',
-        ec_address='${ec_address}',
-        type_of_id='${type_of_id}',
-        id_number='${id_number}',
-        file_path='${file_path} ' 
-        WHERE user_id = ${user_id} `;
-
-      await Connection(query);
-
-      return true;
     } catch (err) {
       return false;
     }
@@ -317,23 +315,51 @@ module.exports = {
       return false;
     }
   },
-  createAppointment: async (payload) => {
-    try {
-      const patientPendingQuery = `INSERT INTO tbl_appointment
-      (appointmentId, appointment_date, patient_id, doctor_id,
-         appointment_type, code, appointment_status) 
-      VALUES ('',
-            '${payload.appointment_date}',
-            '${payload.patientId}',
-            null,
-            '${payload.appointment_type}','','pending')
-      `;
 
-      console.log(
-        patientPendingQuery,
-        "patientPendingQuerypatientPendingQuery"
-      );
-      await Connection(patientPendingQuery);
+  //PUT
+
+  updatePatientDetails: async (params) => {
+    try {
+      const {
+        user_id,
+        agency,
+        ec_name,
+        ec_contact_details,
+        ec_address,
+        type_of_id,
+        id_number,
+        file_path,
+      } = params;
+
+      const query = `UPDATE tbl_patient 
+        SET 
+        agency='${agency}',
+        ec_name='${ec_name}',
+        ec_contact_details='${ec_contact_details}',
+        ec_address='${ec_address}',
+        type_of_id='${type_of_id}',
+        id_number='${id_number}',
+        file_path='${file_path} ' 
+        WHERE user_id = ${user_id} `;
+
+      await Connection(query);
+
+      return true;
+    } catch (err) {
+      return false;
+    }
+  },
+
+  updatePatientIdDetails: async (params) => {
+    try {
+      const { user_id, file_path } = params;
+
+      const query = `UPDATE tbl_patient 
+        SET 
+        file_path='${file_path} ' 
+        WHERE user_id = ${user_id} `;
+
+      await Connection(query);
 
       return true;
     } catch (err) {

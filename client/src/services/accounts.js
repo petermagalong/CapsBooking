@@ -1,9 +1,19 @@
-import { fetchData } from "./client";
-
+import { fetchData, fetchformData } from "./client";
+// POST
 export const loginAuth = async (payload) => {
   const data = await fetchData("/accounts/login", "post", payload);
 
   console.log(data, "query");
+  return data;
+};
+
+export const createPatientAppointment = async (payload) => {
+  const data = await fetchData(
+    `/patients/insertPatientAppointment`,
+    "post",
+    payload
+  );
+
   return data;
 };
 
@@ -12,6 +22,30 @@ export const registerPatient = async (payload) => {
   const data = await fetchData("/accounts/register", "post", payload);
 
   console.log(data, "query");
+  return data;
+};
+
+export const uploadFile = async (formData) => {
+  const data = await fetchformData("/accounts/upload", "post", formData);
+
+  console.log(data, "query");
+  return data;
+};
+
+//GET
+
+export const getPatientIdDetails = async (payload) => {
+  // console.log(payload, `payloadgetPatientDetails?id=${payload.id}`);
+  console.log(
+    `/accounts/image/${payload.payload}`,
+    "`/accounts/image/${payload}`"
+  );
+  const data = await fetchData(
+    `/accounts/image/${payload.payload.replace(/\s/g, "")}`,
+    "get",
+    payload
+  );
+  console.log(data, "`/accounts/image/${payload}`");
   return data;
 };
 
@@ -26,18 +60,6 @@ export const getPatientDetails = async (payload) => {
   return data;
 };
 
-export const updatePatientDetails = async (payload) => {
-  console.log(payload, `payloadgetPatientDetails?id=${payload.id}`);
-  const data = await fetchData(
-    `/patients/updateDetails?id=${payload.id}`,
-    "put",
-    payload
-  );
-
-  console.log(data, "queryupdate");
-  return { res: data.data, status: data.status };
-};
-
 export const getAppointmentCountByDay = async (payload) => {
   // console.log(payload, `payloadgetPatientDetails?id=${payload.id}`);
   payload.appointmentDate = payload.appointmentDate.replace(/'/g, "");
@@ -48,16 +70,6 @@ export const getAppointmentCountByDay = async (payload) => {
   );
 
   console.log(data.data, "dd");
-
-  return data;
-};
-
-export const createPatientAppointment = async (payload) => {
-  const data = await fetchData(
-    `/patients/insertPatientAppointment`,
-    "post",
-    payload
-  );
 
   return data;
 };
@@ -135,4 +147,17 @@ export const getPatientsAppointment = async (userId) => {
   console.log(data.data, "dduck");
 
   return data;
+};
+
+//PUT
+export const updatePatientDetails = async (payload) => {
+  console.log(payload, `payloadgetPatientDetails?id=${payload.id}`);
+  const data = await fetchData(
+    `/patients/updateDetails?id=${payload.id}`,
+    "put",
+    payload
+  );
+
+  console.log(data, "queryupdate");
+  return { res: data.data, status: data.status };
 };

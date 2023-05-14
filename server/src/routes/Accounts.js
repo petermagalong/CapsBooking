@@ -1,12 +1,32 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 
 const { tryCatch } = require("../util/tryCatch");
 const AppError = require("../util/AppError");
 const { AccountValidation } = require("../validations/AccountsValidation");
 const { UserService, PatientService, EmployeeService } = require("../services");
 const { getAge } = require("../util/dateFormat");
+const {
+  updatePatientIdDetails,
+  getPatientInfoByUserId,
+} = require("../services/patient");
+const { deleteFile } = require("../util/deleteFile");
+// Define the storage for uploaded files
+const storage = multer.diskStorage({
+  destination: "uploads/", // Specify the upload directory
+  filename: (req, file, cb) => {
+    // Customize the filename as per your requirement
+    const fileName = Date.now() + "-" + file.originalname;
+    cb(null, fileName);
+  },
+});
+
+// Create the multer upload instance
+const upload = multer({ storage });
 
 router.post(
   `/register`,
@@ -199,5 +219,65 @@ router.put(
     }
   }, AccountValidation.validateUpdate)
 );
+
+router.post("/upload", upload.single("file"), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).send({ message: "No file provided" });
+  }
+  if (!req.query.user_id) {
+    return res.status(400).send({ message: "No user_id provided" });
+  }
+
+  const { user_id } = req.query;
+  const result = await getPatientInfoByUserId({ id: user_id });
+
+  if (result.length <= 0) {
+    return res.status(400).send({ message: "No user found!" });
+  }
+  console.log(`${result[0].file_path}:resulta`);
+  if (result[0].file_path !== null || result[0].file_path !== "") {
+    const filePath = path.join(
+      __dirname,
+      "../..",
+      `uploads`,
+      result[0].file_path.replace(/\s/g, "")
+    );
+    console.log(filePath, "result[0].file_pathresult[0].file_path");
+    await deleteFile(filePath);
+  }
+  console.log(result, " result");
+  const fileName = req.file.filename;
+  await updatePatientIdDetails({ user_id, file_path: fileName });
+
+  res.status(200).send({ status: `${fileName}`, message: "success" });
+});
+
+router.get("/download/:fileName", (req, res) => {
+  const fileName = req.params.fileName;
+  const filePath = path.join(__dirname, "../..", "uploads", fileName);
+
+  res.download(filePath, (err) => {
+    if (err) {
+      console.error(err);
+      res.status(404).send("File not found");
+    }
+  });
+});
+
+router.get("/image/:filename", (req, res) => {
+  const filename = req.params.filename;
+  const imagePath = path.join(__dirname, "../..", "uploads", filename);
+
+  fs.access(imagePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      // File does not exist
+      res.status(404).send({ status: false, message: "Image not found" });
+    } else {
+      // File exists, send it as a response
+      console.log(imagePath, "imagePathimagePath");
+      res.send(filename);
+    }
+  });
+});
 
 module.exports = router;

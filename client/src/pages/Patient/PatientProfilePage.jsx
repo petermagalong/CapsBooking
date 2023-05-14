@@ -5,10 +5,11 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import UserSidebar from '../../components/UserSidebar';
-import { getPatientDetails, updatePatientDetails } from '../../services/accounts';
+import { getPatientDetails, getPatientIdDetails, updatePatientDetails, uploadFile } from '../../services/accounts';
 import { DateFormat, handleKeyPress } from '../../util/dateFormat';
 import moment from 'moment';
-import { Card } from 'react-bootstrap';
+import { Card, Image } from 'react-bootstrap';
+import { fetchformData } from '../../services/client';
 
 export default function PatientProfilePage() {
   const [validated, setValidated] = useState(false);
@@ -35,6 +36,24 @@ export default function PatientProfilePage() {
   });
   const [data, setData] = useState({});
   const [isMatch, setIsMatch] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [fileUrl, setFileUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+
+  const handleFileChange =async (event) => {
+    setSelectedFile(event.target.files[0]);
+    let formData = new FormData();
+    formData.append("file", event.target.files[0]);
+
+    const response = await fetchformData(`/accounts/upload?user_id=${localStorage.getItem("userId")}`, "POST",
+      formData,
+    );
+    if(response.status === '200'){
+      setFileUrl(response.data.status)
+      
+    }
+    console.log(response,"heyheyhey");
+  };
 
   const fetchData = async () => {
     const { data } = await getPatientDetails({ id: localStorage.getItem("userId") });
@@ -44,11 +63,12 @@ export default function PatientProfilePage() {
     });
   }
 
-  console.log(user, "useruseruser")
   useEffect(() => {
+    
+    fetchImage();
     fetchData();
 
-  }, []);
+  }, [fileUrl,selectedFile]);
 
   useEffect(() => {
     if (JSON.stringify(data) === JSON.stringify(user)) {
@@ -58,7 +78,7 @@ export default function PatientProfilePage() {
     }
   }, [data, user]);
 
-  console.log(isMatch)
+
 
   const handleSubmit = async (event) => {
     const form = event.currentTarget;
@@ -89,8 +109,21 @@ export default function PatientProfilePage() {
       alert(res.message)
     }
     setValidated(true);
+  };
+
+  const fetchImage = async () => {
+    try {
+      console.log(user.file_path,"data.file_pathdata.file_path")
+      const response = await getPatientIdDetails({payload:user.file_path||data.file_path}); // Replace with the actual image filename and extension
 
 
+      // const imageBlob = await response.data.blob();
+      // const imageObjectURL = URL.createObjectURL(imageBlob);
+      setImageUrl(response.data);
+
+    } catch (error) {
+      console.error('Error fetching image:', error);
+    }
   };
 
   const handleInputChange = (event) => {
@@ -111,7 +144,7 @@ export default function PatientProfilePage() {
         <Form noValidate validated={validated} onSubmit={handleSubmit}>
           <Row className="mb-3">
             {/* FNAME */}
-            <Form.Group as={Col} md="4" controlId="validationCustom01">
+            <Form.Group as={Col} md="4" >
               <Form.Label style={{ fontSize: '20px' }}>First name</Form.Label>
               <Form.Control
                 type="text"
@@ -123,7 +156,7 @@ export default function PatientProfilePage() {
               <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
             </Form.Group>
             {/* MIDDLE NAME */}
-            <Form.Group as={Col} md="3" controlId="validationCustom02">
+            <Form.Group as={Col} md="3" >
               <Form.Label>Middle name</Form.Label>
               <Form.Control
                 type="text"
@@ -134,7 +167,7 @@ export default function PatientProfilePage() {
               />
             </Form.Group>
             {/* LNAME */}
-            <Form.Group as={Col} md="3" controlId="validationCustom02">
+            <Form.Group as={Col} md="3" >
               <Form.Label>Last name</Form.Label>
               <Form.Control
                 type="text"
@@ -146,7 +179,7 @@ export default function PatientProfilePage() {
               <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
             </Form.Group>
             {/* B_DATE */}
-            <Form.Group as={Col} md="2" controlId="validationCustom02">
+            <Form.Group as={Col} md="2" >
               <Form.Label>Birthday</Form.Label>
               <Form.Control
                 type="date"
@@ -157,7 +190,7 @@ export default function PatientProfilePage() {
               />
             </Form.Group>
             {/* CONTACT # */}
-            <Form.Group as={Col} md="3" controlId="validationCustom02">
+            <Form.Group as={Col} md="3" >
               <Form.Label>Contact Number</Form.Label>
               <Form.Control
                 type="tel"
@@ -171,7 +204,7 @@ export default function PatientProfilePage() {
               <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
             </Form.Group>
             {/* AGENCY */}
-            <Form.Group as={Col} md="3" controlId="validationCustom02">
+            <Form.Group as={Col} md="3" >
               <Form.Label>Agency</Form.Label>
               <Form.Control
                 type="text"
@@ -183,7 +216,7 @@ export default function PatientProfilePage() {
               <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
             </Form.Group>
             {/* ADDRESS */}
-            <Form.Group as={Col} md="5" controlId="validationCustom02">
+            <Form.Group as={Col} md="5" >
               <Form.Label>Address</Form.Label>
               <Form.Control
                 type="text"
@@ -194,42 +227,13 @@ export default function PatientProfilePage() {
               />
               <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
             </Form.Group>
-            {/* USERNAME */}
-            {/* <Form.Group as={Col} md="6" controlId="validationCustomUsername">
-            <Form.Label>Username</Form.Label>
-            <InputGroup hasValidation>
-              <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
-              <Form.Control
-                type="text"
-                aria-describedby="inputGroupPrepend"
-                required
-                value='akoto@email.com'
-              />
-              <Form.Control.Feedback type="invalid">
-                Please choose a username.
-              </Form.Control.Feedback>
-            </InputGroup>
-          </Form.Group> */}
-            {/* PASSWORD */}
-            {/* <Form.Group as={Col} md="6" controlId="validationCustomUsername">
-            <Form.Label>Pasword</Form.Label>
-            <Form.Control
-              type="password"
-              aria-describedby="inputGroupPrepend"
-              required
-              value='akoto@email.com'
-            />
-            <Form.Control.Feedback type="invalid">
-              Please choose a username.
-            </Form.Control.Feedback>
-          </Form.Group> */}
           </Row>
 
           <Row className="mb-3">
 
             <h2 style={{ textAlign: 'center' }}>EMERGENCY CONTACT</h2>
 
-            <Form.Group as={Col} md="4" controlId="validationCustom03">
+            <Form.Group as={Col} md="4" >
               <Form.Label>Name</Form.Label>
               <Form.Control type="text"
                 id="ec_name"
@@ -241,7 +245,7 @@ export default function PatientProfilePage() {
               </Form.Control.Feedback>
             </Form.Group>
 
-            <Form.Group as={Col} md="4" controlId="validationCustom04">
+            <Form.Group as={Col} md="4" >
               <Form.Label>Contact Number</Form.Label>
               <Form.Control
                 type="tel"
@@ -257,7 +261,7 @@ export default function PatientProfilePage() {
               </Form.Control.Feedback>
             </Form.Group>
 
-            <Form.Group as={Col} md="4" controlId="validationCustom05">
+            <Form.Group as={Col} md="4" >
               <Form.Label>Address</Form.Label>
               <Form.Control
                 type="text"
@@ -275,7 +279,7 @@ export default function PatientProfilePage() {
           <Row>
             <h2 style={{ textAlign: 'center' }} >ID</h2>
             {/* MIDDLE NAME */}
-            <Form.Group as={Col} md="4" controlId="validationCustom02">
+            <Form.Group as={Col} md="4" >
               <Form.Label>Type Of ID</Form.Label>
               <Form.Control
                 id="type_of_id"
@@ -284,8 +288,8 @@ export default function PatientProfilePage() {
                 onChange={handleInputChange}
               />
             </Form.Group>
-            {/* LNAME */}
-            <Form.Group as={Col} md="4" controlId="validationCustom02">
+            {/* LNAME  */}
+            <Form.Group as={Col} md="4" >
               <Form.Label>ID Number</Form.Label>
               <Form.Control
                 id="id_number"
@@ -299,12 +303,15 @@ export default function PatientProfilePage() {
               <Form.Control
                 id="file_path"
                 name="file_path"
-                value={user.file_path}
-                onChange={handleInputChange}
+                type="file" 
+                onChange={handleFileChange}
               // onChange={handleChange}
               // isInvalid={!!errors.file}
               />
-              <Form.Control.Feedback type="invalid" tooltip>
+              <div>
+              <img src={`http://localhost:3001/uploads/${user.file_path}`} alt="Image" style={{ width: '300px', height: '200px' }} />
+            </div>
+                <Form.Control.Feedback type="invalid" tooltip>
                 {/* {errors.file} */}
               </Form.Control.Feedback>
             </Form.Group>
