@@ -1,14 +1,19 @@
 
 import React from "react";
-import { Card, Table } from "react-bootstrap";
+import { Button, Card, Stack, Table } from "react-bootstrap";
+import { useLocation } from "react-router-dom";
 // import "./table.css";
 const UserTable = ({
   data = null,
   columns = null,
   hover = true,
   striped = true,
+  onClick = null,
+  openLog = null
 }) => {
-  const getCaps = (head, field) => {
+  const location = useLocation();
+  const userpath = location.pathname.includes('/nurse/schedule')
+  const getCaps = (head, field, path) => {
     if (head) return head.toUpperCase();
     return field.toUpperCase();
   };
@@ -19,19 +24,28 @@ const UserTable = ({
           <thead style={{ backgroundColor: '#3C1220 ', height: '8vh', color: 'white', justifyContent: 'center' }}>
             <tr>
               {columns &&
-                columns.map((head,index1) => (
+                columns.map((head, index1) => (
                   <th key={index1} >{getCaps(head.header, head.field)}</th>
                 ))}
             </tr>
           </thead>
           <tbody>
             {data && data.length > 0 ?
-              (data.map((row,index2) => (
-                <tr key={index2+row+'asd'} className={`${hover && "hover"} ${striped && "striped"}`}>
-                  {columns.map((col,index) => (
-                    <td style={{ height: '60px' }} key={index}>{row[col.field]}</td>
-                  ))}
-                </tr>
+              (data.map((row, index2) => (
+                <>
+                  <tr key={index2 + row + 'asd'} onClick={onClick} className={`${hover && "hover"} ${striped && "striped"}`}>
+                    {columns.map((col, index) => (
+                      <>
+                        <td style={{ height: '60px' }} key={index}>{row[col.field]}</td>
+                      </>
+                    ))}
+                    <>
+                      {userpath ?
+                        <Stack>
+                          <Button onClick={openLog}>Edit</Button>
+                        </Stack> : ''}
+                    </>
+                  </tr></>
               ))) : ''
             }
           </tbody>

@@ -102,3 +102,12 @@
   background-color: #3C1220 !important ;
   border: 1px solid #3a3a38 ;
 }
+td,th{
+  border-bottom:1px #dddddd solid;
+  text-align: left;
+  padding: 8px;
+}
+.hover:hover{
+  background-color: #929069;
+  color: #0E1729;
+}

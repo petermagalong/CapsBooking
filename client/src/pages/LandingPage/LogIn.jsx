@@ -33,6 +33,12 @@ function LogIn() {
     if (loggedIn && role === 'nurse') {
       navigate('/nurse');
     }
+    if (loggedIn && role === 'admin') {
+      navigate('/admin');
+    }
+    if (loggedIn && role === 'clerk') {
+      navigate('/clerk');
+    }
   };
 
   const handleSubmit = async (e) => {
