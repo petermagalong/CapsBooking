@@ -15,6 +15,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 /* Routes */
+const inventoryRoute = require("./routes/Inventory");
 const accountsRoute = require("./routes/Accounts");
 const patientsRoute = require("./routes/Patient");
 const nurseRoute = require("./routes/Nurse");
@@ -22,6 +23,7 @@ const doctorRoute = require("./routes/Doctor");
 const errorHandler = require("./middleware/errorHandler");
 
 app.use("/accounts", accountsRoute);
+app.use("/inventory", inventoryRoute);
 app.use("/patients", patientsRoute);
 app.use("/nurse", nurseRoute);
 app.use("/doctor", doctorRoute);

@@ -8,7 +8,7 @@ export default function NurseHomePage() {
   return (
     <div>
       <UserSidebar>
-        <UserTable data={tableData} columns={columns} hover={true} striped={true} />
+        <UserTable data={tableData} columns={columns} hover={false} striped={true} />
       </UserSidebar >
     </div >
   )

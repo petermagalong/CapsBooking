@@ -279,5 +279,53 @@ router.get("/image/:filename", (req, res) => {
     }
   });
 });
+router.post("/createUser", async (req, res) => {
+  const pass1 = req.body.password;
+
+  const salt = bcrypt.genSaltSync(10);
+  req.body.password = String(bcrypt.hashSync(pass1, salt));
+
+  const {
+    first_name,
+    last_name,
+    role,
+    middle_name,
+    birthday,
+    sex,
+    address,
+    contact_number,
+    email_address,
+    terms_and_condition,
+    password,
+  } = req.body;
+
+  const myAge = getAge(birthday);
+  if (myAge.years < 5) {
+    throw new AppError(false, "Invalid Age Below 5 years old", 400);
+  }
+
+  const val = await UserService.getUser({ email_address });
+
+  if (val[0].email_count > 0) {
+    throw new AppError(false, "Email Already Exist!", 500);
+  }
+
+  const results = await UserService.register({
+    first_name,
+    last_name,
+    role,
+    middle_name,
+    birthday,
+    sex,
+    address,
+    contact_number,
+    email_address,
+    terms_and_condition,
+    password,
+  });
+
+  if (results) res.status(200).send({ status: true, message: "success" });
+  res.status(400).send({ status: false, message: "insert failed" });
+});
 
 module.exports = router;

@@ -10,7 +10,6 @@ export default function NurseBoardPage() {
 
   const getActiveDoctorsValue = async () => {
     const result = await getActiveDoctors()
-    console.log(result,"resultresultresult")
     setActiveDoctors(result.data)
   }
   useEffect(()=>{
@@ -18,7 +17,7 @@ export default function NurseBoardPage() {
   },[])
   return (
     <UserSidebar>
-      <UserTable data={activeDoctors.status} columns={Doctorscolumns} hover={true} striped={true} />
+      <UserTable data={activeDoctors.status} columns={Doctorscolumns} hover={false} striped={true} />
     </UserSidebar>
   )
 }

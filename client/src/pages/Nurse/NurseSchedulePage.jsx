@@ -5,6 +5,7 @@ import UserTable from '../../components/UserTable'
 import { Appointmentcolumns, } from '../../CapsConstant'
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap'
 import { getPatientsAppointments } from '../../services/accounts'
+import { useNavigate } from 'react-router-dom'
 
 function NurseSchedulePage() {
   const [appointmentData, setAppointmentData] = useState([])
@@ -12,29 +13,28 @@ function NurseSchedulePage() {
   const [search, setSearch] = useState('');
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
+  const navigate = useNavigate();
   const handleShow = () => setShow(true);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    if ([name] === 'filterBystatus') {
+    if (name === 'filterBystatus') {
       setFilterByStatus(value)
     }
 
-    if ([name] === 'search') {
+    if (name === 'search') {
       setSearch(value)
     }
 
   }
 
+  const handleRedirect = (payload) => {
+    navigate(`/nurse/logs/${payload.appointmentId}`)
+  } 
+
   const patientAppointmentRecords = async () => {
     const result = await getPatientsAppointments({ search, filterByStatus });
     setAppointmentData(result.data)
-    console.log(appointmentData.status, "result")
-  }
-  const handleEdit = () => {
-    handleClose(true)
-    console.log('tangina')
   }
   useEffect(() => {
     patientAppointmentRecords()
@@ -71,10 +71,13 @@ function NurseSchedulePage() {
           </Col>
         </Row>
       </Form>
-      <UserTable data={appointmentData.status} columns={Appointmentcolumns} hover={true} striped={true} onClick={handleShow} openLog={() => {
-        setShow(false);
-        handleEdit()
-      }} />
+      <UserTable 
+      data={appointmentData.status} 
+      columns={Appointmentcolumns} 
+      hover={true} 
+      striped={true} 
+      onClick={handleRedirect} 
+      />
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>

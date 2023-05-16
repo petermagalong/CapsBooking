@@ -84,6 +84,27 @@ module.exports = {
       return false;
     }
   },
+  createPatientLogs: async (params) => {
+    try {
+      const { inventoryId, appointmentId, quantity, spot } = params;
+
+      const query =
+        `INSERT INTO ` +
+        `tbl_patient_logs ` +
+        `VALUES ` +
+        `(null,${inventoryId},
+          '${appointmentId}',
+          '${quantity}',
+          '${spot}',
+          NOW()
+           )`;
+
+      await Connection(query);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  },
 
   //GET
 
@@ -97,6 +118,26 @@ module.exports = {
       ON tbl_user.userId=tbl_patient.user_id 
       where tbl_user.userId = '${id}' limit 1`;
       console.log(query);
+      const result = await Connection(query);
+
+      return result;
+    } catch (err) {
+      return [];
+    }
+  },
+  getPatientLogs: async (params) => {
+    try {
+      const { id } = params;
+
+      const query = `SELECT tbl_patient_logs.* , tbl_inventory.list 
+      FROM tbl_patient_logs 
+      INNER JOIN tbl_inventory
+      ON tbl_patient_logs.inventoryId=tbl_inventory.inventoryId  
+      INNER JOIN tbl_appointment 
+      ON tbl_appointment.appointmentId=tbl_patient_logs.appointmentId  
+      where tbl_patient_logs.appointmentId = '${id}' 
+      order by tbl_patient_logs.patientLogDateTime desc`;
+
       const result = await Connection(query);
 
       return result;

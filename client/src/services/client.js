@@ -22,7 +22,8 @@ const makeRequest = async ({
       params,
       headers,
     });
-    console.log(response, "gg");
+    console.log(`URL ${url}`);
+    console.log(response, "response API ");
     return { data: response.data, status: response.status };
   } catch (error) {
     if (error.response) {
@@ -54,9 +55,9 @@ export async function fetchData(url, method, payload) {
 }
 
 export async function fetchformData(url, method, payload) {
-  for (let pair of payload.entries()) {
-    console.log(pair[0], pair[1]);
-  }
+  // for (let pair of payload.entries()) {
+  //   console.log(pair[0], pair[1]);
+  // }
   try {
     const data = await makeRequest({
       url,

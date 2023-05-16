@@ -25,12 +25,13 @@ import AdminSchedulePage from "./pages/Admin/AdminSchedulePage";
 import ClerkIndex from "./pages/Clerk/ClerkIndex";
 import ClerkInventory from "./pages/Clerk/ClerkInventory";
 import ClerkSupply from "./pages/Clerk/ClerkSupply";
+import NurseLogsPage from "./pages/Nurse/NurseLogsPage";
 function App() {
-  let location = useLocation()
-  const userPage = location.pathname.includes('/user')
-  const nursePage = location.pathname.includes('/nurse')
-  const adminPage = location.pathname.includes('/admin')
-  const clerkPage = location.pathname.includes('/clerk')
+  let location = useLocation();
+  const userPage = location.pathname.includes("/user");
+  const nursePage = location.pathname.includes("/nurse");
+  const adminPage = location.pathname.includes("/admin");
+  const clerkPage = location.pathname.includes("/clerk");
   const [isLogged, setIsLogged] = useState(false);
   const [role, setRole] = useState("");
   const isLoggedin = () => {
@@ -41,79 +42,76 @@ function App() {
   useEffect(() => {
     isLoggedin();
   }, []);
-  console.log(userPage)
+  console.log(userPage);
 
   return (
     <>
-      {userPage || nursePage || adminPage || clerkPage ? "" :
-        <Navbar className="NavbarStyle" collapseOnSelect expand="lg" variant="dark" sticky="top">
-          <Navbar.Brand><img className="navbarLogo" alt='CAPS' src='images/capslogo.png' /></Navbar.Brand>
+      {userPage || nursePage || adminPage || clerkPage ? (
+        ""
+      ) : (
+        <Navbar
+          className="NavbarStyle"
+          collapseOnSelect
+          expand="lg"
+          variant="dark"
+          sticky="top"
+        >
+          <Navbar.Brand>
+            <img className="navbarLogo" alt="CAPS" src="images/capslogo.png" />
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse className='navBarToggle' id="responsive-navbar-nav">
-            <Nav >
-              <Nav.Link className="navBarItem" as={Link} to="/">HOME</Nav.Link>
-              <Nav.Link className="navBarItem" as={Link} to="/">SERVICES</Nav.Link>
-              <Nav.Link className="navBarItem" as={Link} to="/">ABOUT</Nav.Link>
-              <Nav.Link className="navBarItem" as={Link} to="/">CONTACT US</Nav.Link>
-              <Nav.Link className="navBarItem" as={Link} to="/login">LOG IN</Nav.Link>
+          <Navbar.Collapse className="navBarToggle" id="responsive-navbar-nav">
+            <Nav>
+              <Nav.Link className="navBarItem" as={Link} to="/">
+                HOME
+              </Nav.Link>
+              <Nav.Link className="navBarItem" as={Link} to="/">
+                SERVICES
+              </Nav.Link>
+              <Nav.Link className="navBarItem" as={Link} to="/">
+                ABOUT
+              </Nav.Link>
+              <Nav.Link className="navBarItem" as={Link} to="/">
+                CONTACT US
+              </Nav.Link>
+              <Nav.Link className="navBarItem" as={Link} to="/login">
+                LOG IN
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-      }
+      )}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/signUp" element={<SignUp />} />
         {/* USER */}
-        <Route path="/user"
-          element={<PatientProfilePage />}
-        />
-        <Route path="/user/profile"
-          element={<PatientProfilePage />}
-        />
-        <Route path="/user/reservation"
-          element={<PatientReservationPage />}
-        />
-        <Route path="/user/transaction-history"
+        <Route path="/user" element={<PatientProfilePage />} />
+        <Route path="/user/profile" element={<PatientProfilePage />} />
+        <Route path="/user/reservation" element={<PatientReservationPage />} />
+        <Route
+          path="/user/transaction-history"
           element={<PatientTransacPage />}
         />
 
         {/* NURSE*/}
-        <Route path="/nurse"
-          element={<NurseHomePage />}
-        />
-        <Route path="/nurse/home"
-          element={<NurseHomePage />}
-        />
-        <Route path="/nurse/schedule"
-          element={<NurseSchedulePage />}
-        />
-        <Route path="/nurse/doctors-on-board"
-          element={<NurseBoardPage />}
-        />
+        <Route path="/nurse" element={<NurseHomePage />} />
+        <Route path="/nurse/home" element={<NurseHomePage />} />
+        <Route path="/nurse/schedule" element={<NurseSchedulePage />} />
+        <Route path="/nurse/doctors-on-board" element={<NurseBoardPage />} />
+        <Route path="/nurse/logs/:id" element={<NurseLogsPage />} />
         {/* ADMIN */}
-        <Route path="/admin"
-          element={<AdminHomePage />}
-        />
-        <Route path="/admin/home"
-          element={<AdminHomePage />}
-        />
-        <Route path="/admin/user-management"
+        <Route path="/admin" element={<AdminHomePage />} />
+        <Route path="/admin/home" element={<AdminHomePage />} />
+        <Route
+          path="/admin/user-management"
           element={<AdminManagementPage />}
         />
-        <Route path="//admin/schedules"
-          element={<AdminSchedulePage />}
-        />
+        <Route path="//admin/schedules" element={<AdminSchedulePage />} />
         {/* CLERK */}
-        <Route path="/clerk"
-          element={<ClerkInventory />}
-        />
-        <Route path="/clerk/inventory-items"
-          element={<ClerkInventory />}
-        />
-        <Route path="/clerk/supply"
-          element={<ClerkSupply />}
-        />
+        <Route path="/clerk" element={<ClerkInventory />} />
+        <Route path="/clerk/inventory-items" element={<ClerkInventory />} />
+        <Route path="/clerk/supply" element={<ClerkSupply />} />
 
         {/* PROTECTED ROUTES (FOR IMPLEMENTATION) */}
         <Route

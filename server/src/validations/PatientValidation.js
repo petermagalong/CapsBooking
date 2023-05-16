@@ -57,6 +57,18 @@ const createPatient = Joi.object({
     .required()
     .messages({ "any.only": "Appointment Date Not allow to be enmpty" }),
 });
+const createPatientLogs = Joi.object({
+  inventoryId: Joi.number()
+    .required()
+    .messages({ "any.only": "inventoryId Id Not allow to be empty" }),
+  appointmentId: Joi.number()
+    .required()
+    .messages({ "any.only": "appointmentId Type Not allow to be enmpty" }),
+  quantity: Joi.number()
+    .required()
+    .messages({ "any.only": "quantity Not allow to be enmpty" }),
+  spot: Joi.string().optional().allow(""),
+});
 
 module.exports.PatientValidation = {
   validateGetPatientInfo: validator(getPatientInfo),
@@ -64,4 +76,5 @@ module.exports.PatientValidation = {
   validateChangePatientPassword: validator(UpdateChangePassword),
   validateUpdatePatientDetails: validator(UpdatePatientDetails),
   validateCreatePatientAppointment: validator(createPatient),
+  validateCreatePatientLogs: validator(createPatientLogs),
 };

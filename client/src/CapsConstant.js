@@ -147,3 +147,10 @@ export const Doctorscolumns = [
   { field: "doctor_name", header: "Doctors Name" },
   { field: "specialization", header: "Specialization" },
 ];
+
+export const PatientLogscolumns = [
+  { field: "patientLogId", header: "ID" },
+  { field: "quantity", header: "Quantity" },
+  { field: "list", header: "Item" },
+  { field: "patientLogDateTime", header: "Date" },
+];

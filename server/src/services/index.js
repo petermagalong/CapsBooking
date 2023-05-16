@@ -3,4 +3,5 @@ module.exports = {
   UserService: require("./user"),
   EmployeeService: require("./employee"),
   DoctorService: require("./doctor"),
+  InventoryService: require("./inventory"),
 };

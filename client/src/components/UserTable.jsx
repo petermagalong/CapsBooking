@@ -33,19 +33,30 @@ const UserTable = ({
             {data && data.length > 0 ?
               (data.map((row, index2) => (
                 <>
-                  <tr key={index2 + row + 'asd'} onClick={onClick} className={`${hover && "hover"} ${striped && "striped"}`}>
-                    {columns.map((col, index) => (
-                      <>
-                        <td style={{ height: '60px' }} key={index}>{row[col.field]}</td>
-                      </>
-                    ))}
-                    <>
-                      {userpath ?
-                        <Stack>
-                          <Button onClick={openLog}>Edit</Button>
-                        </Stack> : ''}
-                    </>
-                  </tr></>
+                  {onClick !== null ? (
+                      <tr
+                        key={index2 + row + 'asd'}
+                        onClick={() => onClick(row)}
+                        className={`${hover && "hover"} ${striped && "striped"}`}
+                      >
+                        {columns.map((col, index) => (
+                          <td style={{ height: '60px' }} key={index}>
+                            {row[col.field]}
+                          </td>
+                        ))}
+                      </tr>
+                    ) : (
+                      <tr
+                        key={index2 + row + 'asd'}
+                        className={`${hover && "hover"} ${striped && "striped"}`}
+                      >
+                        {columns.map((col, index) => (
+                          <td style={{ height: '60px' }} key={index}>
+                            {row[col.field]}
+                          </td>
+                        ))}
+                      </tr>
+              )}</>
               ))) : ''
             }
           </tbody>

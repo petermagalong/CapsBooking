@@ -15,7 +15,9 @@ const {
 const {
   getPatientAppointmentNotExist,
   createAppointment,
+  createPatientLogs,
 } = require("../services/patient");
+const { updateInventoryItems } = require("../services/inventory");
 
 router.get(
   `/getUserProfile`,
@@ -267,6 +269,8 @@ router.post(
   }, PatientValidation.validateCreatePatientAppointment)
 );
 
+
+
 router.get(
   `/getPatientsAppointmentDetails`,
   tryCatch(async (req, res) => {
@@ -281,6 +285,37 @@ router.get(
       message: "Success",
     });
   })
+);
+
+router.post(
+  `/patientLogs`,
+  tryCatch(async (req, res) => {
+    const { inventoryId, appointmentId, quantity, spot } = req.body;
+
+    if (quantity <= 0) {
+      res.status(400).send({
+        status: false,
+        message: `Invalid Value ${quantity}`,
+      });
+      return;
+    }
+
+    const updateResult = await updateInventoryItems({ inventoryId, quantity });
+
+    if (!updateResult)
+      throw new AppError(false, "update inventory item failed", 400);
+
+    const result = await createPatientLogs({
+      inventoryId,
+      appointmentId,
+      quantity,
+      spot,
+    });
+    res.status(200).send({
+      status: result,
+      message: "Success",
+    });
+  }, PatientValidation.validateCreatePatientLogs)
 );
 
 module.exports = router;
