@@ -1,6 +1,7 @@
 import { Button, Card } from "react-bootstrap";
 import "./styles.css";
 import Services from './Services'
+import { Link } from "react-router-dom";
 
 const backgroundStyle = {
   margin: '0px',
@@ -29,7 +30,7 @@ function HomePage() {
             hard to give you the best experience
             possible when it comes to your medical
             needs.</h5>
-          <Button className="homePageButton" size="lg" >Book Now</Button>
+          <Button as={Link} to="/login" className="homePageButton" size="lg" >Book Now</Button>
         </Card>
       </Card >
       <Services />

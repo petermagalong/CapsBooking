@@ -89,7 +89,7 @@ function LogIn() {
                 <Form.Group style={{ width: '100%' }} className="mb-3" controlId="formBasicEmail">
                   <Form.Label style={{ fontSize: '2rem', color: '#d5a03b', display: 'flex', justifyContent: 'center' }}>Email address</Form.Label>
                   <Form.Control style={{ height: '50px' }} type="text" placeholder="Enter email" name='email_address' value={formValues.email_address || ""} onChange={handleChange} />
-                  <Form.Text style={{ color: '#e6c78a', fontSize: '1rem' }}>
+                  <Form.Text style={{ color: '#e6c78a', fontSize: '1rem', marginTop: '10px' }}>
                     We'll never share your email with anyone else.
                   </Form.Text>
                   <p>{formErrors.email_address}</p>
@@ -99,16 +99,13 @@ function LogIn() {
                   <Form.Control style={{ height: '50px' }} type="password" placeholder="Password" name='password' value={formValues.password || ""} onChange={handleChange} />
                   <p>{formErrors.password}</p>
                 </Form.Group >
-                <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                  <Form.Check style={{ color: '#e6c78a', fontSize: '1rem' }} type="checkbox" label="Remember my credentials" />
-                </Form.Group>
+                <p style={{ color: 'red', textTransform: 'uppercase', fontSize: '14px' }} >{formErrors.errorVal}</p>
                 <Button
                   onClick={(e) => handleSubmit(e)}
                   // as={Link} to={"/user"} 
                   className="LogPageButton" size="lg">
                   Submit
                 </Button>
-                <p>{formErrors.errorVal}</p>
               </Form>
             </Card>
           </Col>

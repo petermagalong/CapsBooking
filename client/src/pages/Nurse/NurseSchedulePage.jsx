@@ -25,12 +25,11 @@ function NurseSchedulePage() {
     if (name === 'search') {
       setSearch(value)
     }
-
   }
 
   const handleRedirect = (payload) => {
     navigate(`/nurse/logs/${payload.appointmentId}`)
-  } 
+  }
 
   const patientAppointmentRecords = async () => {
     const result = await getPatientsAppointments({ search, filterByStatus });
@@ -71,12 +70,12 @@ function NurseSchedulePage() {
           </Col>
         </Row>
       </Form>
-      <UserTable 
-      data={appointmentData.status} 
-      columns={Appointmentcolumns} 
-      hover={true} 
-      striped={true} 
-      onClick={handleRedirect} 
+      <UserTable
+        data={appointmentData.status}
+        columns={Appointmentcolumns}
+        hover={true}
+        striped={true}
+        onClick={handleRedirect}
       />
 
       <Modal show={show} onHide={handleClose}>
