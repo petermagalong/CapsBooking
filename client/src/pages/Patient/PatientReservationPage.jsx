@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import UserSidebar from '../../components/UserSidebar'
 import './patient.css'
-import { Button, Card, Col, Dropdown, Modal, Row, Stack } from 'react-bootstrap';
+import { Button, Card, Col, Dropdown, Form, Modal, Row, Stack } from 'react-bootstrap';
 import moment from 'moment';
 import { createPatientAppointment, getAppointmentCountByDay, getPatientsAppointment } from '../../services/accounts';
 import { useEffect } from 'react';
@@ -15,6 +15,7 @@ export default function PatientReservationPage() {
   const [slot, setSlot] = useState(0);
   const [getPatientAppointment, setgetPatientAppointment] = useState({ status: [] })
   const [appointmentCrete, setAppointmentcreate] = useState(false)
+  const [openModal, setOpenModal] = useState(true)
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -22,6 +23,11 @@ export default function PatientReservationPage() {
   const items = ['Overseas Pre-employment', 'Complete Laboratoty Diagnostic', 'Covid-19 Testing', 'Drug Test', 'X-ray']
   const [selectedItem, setSelectedItem] = useState("");
   const [errorMessage, setErrorMessage] = useState({ message: "", status: "" });
+
+  const handleModal = () => {
+    console.log('MODAL TO MAMAYA')
+    setOpenModal(false)
+  }
 
   useEffect(() => {
     getAppointment()
@@ -42,6 +48,8 @@ export default function PatientReservationPage() {
     const count = result <= 0 ? 0 : result
     setSlot(count)
   }
+
+
 
   const handleBookAppointment = async () => {
     const payload = {
@@ -112,10 +120,10 @@ export default function PatientReservationPage() {
         <Modal show={show} onHide={handleClose}
           aria-labelledby="contained-modal-title-vcenter"
           centered>
-          <Modal.Header closeButton>
+          <Modal.Header style={{ backgroundColor: 'red', width: '700px' }} closeButton>
             <Modal.Title>Note: <h5 style={{ fontWeight: 400 }}>the first to arrive will be the first to have service provided</h5> </Modal.Title>
           </Modal.Header>
-          <Modal.Body>
+          <Modal.Body style={{ backgroundColor: 'pink', width: '700px', height: '30vh' }}>
             <Row>
               <Col style={{ fontWeight: 600 }} md={4}>Date:</Col>
               <Col md={4}>{value.toDateString()}</Col>
@@ -141,15 +149,23 @@ export default function PatientReservationPage() {
                 </Dropdown>
 
               </Col>
+              <Row>
+                <Col>
+                  <Form.Check style={{ color: 'black', marginBottom: '30px' }} type="checkbox" name='terms_and_condition'
+                    onClick={handleModal}
+                    // checked={formValues.terms_and_condition} onChange={handleChange} 
+                    label="TERMS AND CONDITION" />
+                </Col>
+              </Row>
             </Row>
           </Modal.Body>
-          <Modal.Footer>
+          <Modal.Footer style={{ backgroundColor: 'red', width: '700px' }}>
             <p style={{ color: 'red' }}>{errorMessage.message}</p>
             {/* <Button variant="danger" onClick={handleClose}>
             Cancel
           </Button> */}
             { }
-            <Button variant="primary" onClick={handleBookAppointment}>
+            <Button variant="primary" disabled={openModal} onClick={handleBookAppointment}>
               Save
             </Button>
 

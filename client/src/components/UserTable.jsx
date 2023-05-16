@@ -34,29 +34,34 @@ const UserTable = ({
               (data.map((row, index2) => (
                 <>
                   {onClick !== null ? (
-                      <tr
-                        key={index2 + row + 'asd'}
-                        onClick={() => onClick(row)}
-                        className={`${hover && "hover"} ${striped && "striped"}`}
-                      >
-                        {columns.map((col, index) => (
-                          <td style={{ height: '60px' }} key={index}>
-                            {row[col.field]}
-                          </td>
-                        ))}
-                      </tr>
-                    ) : (
-                      <tr
-                        key={index2 + row + 'asd'}
-                        className={`${hover && "hover"} ${striped && "striped"}`}
-                      >
-                        {columns.map((col, index) => (
-                          <td style={{ height: '60px' }} key={index}>
-                            {row[col.field]}
-                          </td>
-                        ))}
-                      </tr>
-              )}</>
+
+                    <tr
+                      key={index2 + row + 'asd'}
+                      onClick={() => onClick(row)}
+                      className={`${hover && "hover"} ${striped && "striped"}`}
+                    >
+                      {columns.map((col, index) => (
+                        <td style={{ height: '60px' }} key={index}>
+                          {row[col.field]}
+                        </td>
+                      ))}
+
+                      {userpath &&
+                        <Button>UPDATE</Button>
+                      }
+                    </tr>
+                  ) : (
+                    <tr
+                      key={index2 + row + 'asd'}
+                      className={`${hover && "hover"} ${striped && "striped"}`}
+                    >
+                      {columns.map((col, index) => (
+                        <td style={{ height: '60px' }} key={index}>
+                          {row[col.field]}
+                        </td>
+                      ))}
+                    </tr>
+                  )}</>
               ))) : ''
             }
           </tbody>
