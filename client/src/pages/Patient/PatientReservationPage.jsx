@@ -7,17 +7,17 @@ import moment from 'moment';
 import { createPatientAppointment, getAppointmentCountByDay, getPatientsAppointment } from '../../services/accounts';
 import { useEffect } from 'react';
 
-
-
 export default function PatientReservationPage() {
   const [value, onChange] = useState(new Date());
   const [show, setShow] = useState(false);
+  const [isshow, IssetShow] = useState(false);
   const [slot, setSlot] = useState(0);
   const [getPatientAppointment, setgetPatientAppointment] = useState({ status: [] })
   const [appointmentCrete, setAppointmentcreate] = useState(false)
-  const [openModal, setOpenModal] = useState(true)
+  const [checkbox, setCheckbox] = useState(true)
 
   const handleClose = () => setShow(false);
+  const termsClose = () => IssetShow(false);
   const handleShow = () => setShow(true);
 
   const items = ['Overseas Pre-employment', 'Complete Laboratoty Diagnostic', 'Covid-19 Testing', 'Drug Test', 'X-ray']
@@ -25,8 +25,8 @@ export default function PatientReservationPage() {
   const [errorMessage, setErrorMessage] = useState({ message: "", status: "" });
 
   const handleModal = () => {
-    console.log('MODAL TO MAMAYA')
-    setOpenModal(false)
+    setCheckbox(false)
+    IssetShow(true)
   }
 
   useEffect(() => {
@@ -49,8 +49,6 @@ export default function PatientReservationPage() {
     setSlot(count)
   }
 
-
-
   const handleBookAppointment = async () => {
     const payload = {
       userId: localStorage.getItem("userId"),
@@ -72,10 +70,11 @@ export default function PatientReservationPage() {
   return (
     <>
       <UserSidebar>
-        <Row>
+        <Row className='rowContainer' >
           <Col md={6}>
             <Stack>
-              <h2 style={{ marginTop: '80px' }}>Please select your reffered Date:</h2>
+              <h2 style={{ margin: '8px', color: '#3C1220' }}>
+                Please select your preferred Date:</h2>
               <Calendar
                 className='react-calendar'
                 onChange={onChange}
@@ -88,14 +87,14 @@ export default function PatientReservationPage() {
             </Stack>
           </Col>
           <Col md={6} >
-            <Stack style={{ padding: '80px 30px' }}>
+            <Stack >
               <Button className='homePageButton'
-                style={{ marginTop: '90px', whiteSpace: 'nowrap', width: '100%', height: '100px', }}
+                style={{ whiteSpace: 'nowrap', width: '550px', height: '80px' }}
                 variant="primary" onClick={handleShow}
                 disabled={getPatientAppointment?.status.length > 0}>
                 {
                   getPatientAppointment?.status?.length && getPatientAppointment.status.length > 0 ? (
-                    <h3>Reserve on {getPatientAppointment.status[0].appointment_date}</h3>
+                    <h3>Reserved on {getPatientAppointment.status[0].appointment_date}</h3>
                   ) : (
                     <h3>Set Reservation on {value.toDateString()}</h3>
                   )
@@ -105,7 +104,7 @@ export default function PatientReservationPage() {
                 getPatientAppointment?.status && getPatientAppointment?.status.length > 0 ? (
                   <>
                     Note: <h5 style={{ fontWeight: 400 }}>the first to arrive will be the first to have service provided</h5>
-                    <p>Reserve Date : {getPatientAppointment.status[0].appointment_date}</p>
+                    <p>Reserved Date : {getPatientAppointment.status[0].appointment_date}</p>
                     <p>Appointment Type : {getPatientAppointment.status[0].appointment_type}</p>
                     <p>Appointment Status : {getPatientAppointment.status[0].appointment_status}</p>
                   </>
@@ -120,23 +119,28 @@ export default function PatientReservationPage() {
         <Modal show={show} onHide={handleClose}
           aria-labelledby="contained-modal-title-vcenter"
           centered>
-          <Modal.Header style={{ backgroundColor: 'red', width: '700px' }} closeButton>
-            <Modal.Title>Note: <h5 style={{ fontWeight: 400 }}>the first to arrive will be the first to have service provided</h5> </Modal.Title>
+          <Modal.Header className='modalHeader' closeButton>
+            <Modal.Title>
+              <h5 style={{ fontWeight: 400 }}> <b>NOTE:</b> The first to arrive will be the first to have service provided.</h5> </Modal.Title>
           </Modal.Header>
-          <Modal.Body style={{ backgroundColor: 'pink', width: '700px', height: '30vh' }}>
-            <Row>
-              <Col style={{ fontWeight: 600 }} md={4}>Date:</Col>
-              <Col md={4}>{value.toDateString()}</Col>
+          <Modal.Body style={{ height: '30vh' }}>
+            <Row className='rowModalTitle'>
+              <Col className='modalDataTitle' md={4}>Date:</Col>
+              <Col md={6}>{value.toDateString()}</Col>
             </Row>
-            <Row>
-              <Col style={{ fontWeight: 600 }} md={4}>Slot Available:</Col>
-              <Col md={4}>{slot.toString()}</Col>
+            <Row className='rowModalTitle'>
+              <Col className='modalDataTitle' md={4}>clinic hours:</Col>
+              <Col md={6}>8:00 AM - 4:00 PM</Col>
             </Row>
-            <Row>
-              <Col style={{ fontWeight: 600 }} md={4}>Appointment type:</Col>
-              <Col md={4}>
-                <Dropdown >
-                  <Dropdown.Toggle size='xs' variant="secondary-outlined" id="dropdown-basic">
+            <Row className='rowModalTitle'>
+              <Col className='modalDataTitle' md={4}>Slots Available:</Col>
+              <Col md={6}>{slot.toString()}</Col>
+            </Row>
+            <Row className='rowModalTitle'>
+              <Col className='modalDataTitle' md={4}>Appointment type:</Col>
+              <Col md={6}>
+                <Dropdown>
+                  <Dropdown.Toggle variant="secondary-outlined" id="dropdown-basic">
                     {selectedItem}
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
@@ -147,11 +151,13 @@ export default function PatientReservationPage() {
                     ))}
                   </Dropdown.Menu>
                 </Dropdown>
-
               </Col>
-              <Row>
-                <Col>
-                  <Form.Check style={{ color: 'black', marginBottom: '30px' }} type="checkbox" name='terms_and_condition'
+              <Row className='rowModalTitle'>
+                <Col md={10} style={{ padding: '10px', height: '50px' }}>
+                  <Form.Check style={{ color: 'black', marginBottom: '30px', fontWeight: 500 }}
+                    // as={Button}
+                    type="checkbox"
+                    name='terms_and_condition'
                     onClick={handleModal}
                     // checked={formValues.terms_and_condition} onChange={handleChange} 
                     label="TERMS AND CONDITION" />
@@ -159,19 +165,34 @@ export default function PatientReservationPage() {
               </Row>
             </Row>
           </Modal.Body>
-          <Modal.Footer style={{ backgroundColor: 'red', width: '700px' }}>
+          <Modal.Footer style={{ width: '700px', height: '60px', padding: '0px 15px' }}>
             <p style={{ color: 'red' }}>{errorMessage.message}</p>
             {/* <Button variant="danger" onClick={handleClose}>
             Cancel
           </Button> */}
             { }
-            <Button variant="primary" disabled={openModal} onClick={handleBookAppointment}>
-              Save
+            <Button style={{ width: '200px', textTransform: 'uppercase', fontWeight: 500 }} variant="primary" disabled={checkbox} onClick={handleBookAppointment}>
+              Set Appointment
             </Button>
 
           </Modal.Footer>
         </Modal>
-      </UserSidebar>
+
+        <Modal show={isshow} onHide={termsClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={handleClose}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </UserSidebar >
 
     </>
   );

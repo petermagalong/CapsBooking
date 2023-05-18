@@ -29,7 +29,7 @@ export default function UserSidebar(props) {
         </Navbar.Collapse>
       </Navbar>
       <Row>
-        <Col className="Col1" style={{ height: '90vh', background: '#04061d', padding: '0px' }}
+        <Col className="Col1" style={{ height: '87vh', background: '#04061d', padding: '0px' }}
           xs={2}>
           {sideBarData.map(data => {
             if (data.role === role) {
@@ -38,7 +38,7 @@ export default function UserSidebar(props) {
                   {data.links.map(role => {
                     return (
                       <Button as={Link} to={role.path} onClick={onShow} className='usbButton'>
-                        <h3>{role.name}</h3>
+                        <p className='usbItem'>{role.name}</p>
                       </Button>
                     )
                   })}
@@ -47,8 +47,10 @@ export default function UserSidebar(props) {
             }
           })}
         </Col>
-        <Col style={{ height: '90vh' }} xs={10}>
-          <Card style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', height: '100%', border: 'none' }}>
+        <Col xs={10}
+          style={{ padding: '0px' }}
+        >
+          <Card style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', height: '100%', border: 'none', width: '100%' }}>
             {props.children}
           </Card>
         </Col>

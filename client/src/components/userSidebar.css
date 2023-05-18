@@ -4,12 +4,12 @@
   align-items: center;
   margin-bottom: 10px;
   width: 100%;
-  height: 200px;
+  height: 150px;
   background-color: transparent;
   border: none;
 }
 .usbButton:hover{
-  background-color: rgb(121, 25, 25);
+  background-color: rgb(88, 15, 15);
 }
 .navBaritem{
   font-size: 20px;
@@ -21,4 +21,8 @@
   padding: 10px;
   justify-content: end;
   text-align: center;
+}
+.usbItem{
+  font-size: 25px;
+  font-weight: 500;
 }

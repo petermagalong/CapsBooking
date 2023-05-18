@@ -1,18 +1,15 @@
 .react-calendar{
-  margin-top: 50px;
+  margin-top: 10px;
   width: 40vw !important;
-  height: 50vh;
+  height: 51vh;
   border: 1px solid #970707 !important;
   box-shadow: -1px -1px 5px #c88347;
-}
-.react-calendar_viewContainer{
-  height: 100%;
 }
 .react-calendar__tile:disabled{
   background-color: #c88347;
 }
 .react-calendar__month-view__days{
-  height: 400px;
+  height: 265px;
 }
 .react-calendar__tile.react-calendar__tile--now.react-calendar__month-view__days__day{
   background-color: #970707;
@@ -24,5 +21,37 @@
   background-color: #c88347;
 }
 .react-calendar__navigation{
-  height: 80px !important;
+  height: 50px !important;
+}
+.rowContainer{
+height: 85vh;
+padding: 10px;
+margin: 8px;
+border: 1px solid #c88347 ;
+border-radius: 5px;
+}
+.modal-content{
+  width: 700px;
+}
+.modalHeader{
+  height: 80px;
+  background-color: #2b0713;
+  color: white
+}
+.btn-close{
+  background-color: white;
+}
+.modalDataTitle{
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.rowModalTitle{
+  margin-bottom: 15px;
+}
+#dropdown-basic{
+  background-color: rgba(83, 80, 75, 0.082);
+  width: 267px;
+  height: 38px;
+  display: flex;
+  justify-content: space-between;
 }

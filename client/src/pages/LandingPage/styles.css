@@ -15,8 +15,8 @@
 }
 /* APP.JS FILE */
 .NavbarStyle {
-  padding: 0px;
-  height: 12vh;
+  position: sticky;
+  height: 13vh;
   background-color: #04061d;
 }
 .navBarItem {
@@ -28,7 +28,9 @@
   text-shadow: 2px 2px 4px #ffe5d3;
 }
 .navbarLogo {
-  margin-left: 20px;
+  position: absolute;
+  margin: 10px 20px;
+  top: 0;
   height: 80px;
   width: 80px;
 }
@@ -110,4 +112,49 @@ td,th{
 .hover:hover{
   background-color: #929069;
   color: #0E1729;
+}
+/* PATIENT PROFILE */
+.patientProfile{
+  background-color: #fcfcfc;
+  border: 1px solid #471d18;
+  box-shadow: 1px -2px 5px #ad8a86;
+  padding:30px 50px 20px 50px ;
+  margin-top: 20px;
+  width: 75vw;
+}
+.userLabel{
+  font-size: 16px;
+  font-weight: 500;
+  color: #3C1220;
+  text-transform: uppercase;
+}
+.profileRow{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+.uploadIMG{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 200px;
+    margin-top: '20px';
+}
+.submitButton{
+  display: flex;
+  justify-content: flex-end;
+}
+.buttonSave{
+  background-color:#d5a03b;
+  border: none;
+}
+.buttonSave:hover{
+  background-color: #491d11;
+}
+ .btn:disabled{
+  background-color: transparent;
+  color: black;
+  border: 1px solid rgb(56, 7, 7);
 }
