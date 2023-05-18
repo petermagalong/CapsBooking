@@ -5,6 +5,8 @@ module.exports = {
     try {
       const query = `select 
         tbl_inventory.* ,
+        DATE_FORMAT(deliveryDate,'%Y-%m-%d') as deliveryDate, 
+        DATE_FORMAT(expirationDate,'%Y-%m-%d') as expirationDate, 
         tbl_supplier.name ,
         tbl_supplier.contactNumber ,
         tbl_supplier.item 
@@ -46,6 +48,18 @@ module.exports = {
       return true;
     } catch (err) {
       return false;
+    }
+  },
+  getAllSupplier: async () => {
+    try {
+      const query = `
+      SELECT * FROM tbl_supplier `;
+
+      const result = await Connection(query);
+
+      return result;
+    } catch (err) {
+      return [];
     }
   },
 };

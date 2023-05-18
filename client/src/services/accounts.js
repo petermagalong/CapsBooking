@@ -146,3 +146,15 @@ export const updatePatientAppointment = async (payload) => {
 
   return { res: data.data, status: data.status };
 };
+
+export const download = async (payload) => {
+  const data = await fetchData(`/accounts/download/${payload}`, "get");
+
+  return { res: data.data, status: data.status };
+};
+
+export const getAllUser = async () => {
+  const data = await fetchData(`/accounts/getAllUser`, "get");
+
+  return { res: data.data, status: data.status };
+};

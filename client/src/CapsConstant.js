@@ -146,6 +146,7 @@ export const Appointmentcolumns = [
 export const Doctorscolumns = [
   { field: "doctor_name", header: "Doctors Name" },
   { field: "specialization", header: "Specialization" },
+  { field: "status", header: "Status" },
 ];
 
 export const PatientLogscolumns = [
@@ -161,4 +162,27 @@ export const PatientTransactioncolumns = [
   { field: "test", header: "Test" },
   { field: "status", header: "Status" },
   { field: "result", header: "Result" },
+];
+
+export const Usercolumns = [
+  { field: "userId", header: "User Id" },
+  { field: "full_name", header: "Name" },
+  { field: "email_address", header: "Email" },
+  { field: "role", header: "Role" },
+  { field: "sex", header: "Sex" },
+  { field: "contact_number", header: "Contact Number" },
+];
+
+export const Suppliercolumns = [
+  { field: "supplierId", header: "Supplier Id" },
+  { field: "name", header: "Name" },
+  { field: "contactNumber", header: "Contact Number" },
+  { field: "item", header: "Item" },
+];
+
+export const Inventorycolumns = [
+  { field: "list", header: "List" },
+  { field: "deliveryDate", header: "Delivery Date" },
+  { field: "quantity", header: "Quantity" },
+  { field: "expirationDate", header: "Expiration Date" },
 ];

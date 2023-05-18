@@ -83,7 +83,7 @@ export default function PatientTransacPage() {
           </Col>
         </Row>
       </Form>
-      <UserTable data={transactionData.status} columns={columnsTransaction} hover={false} striped={true} />
+      <UserTable data={transactionData.status} columns={columnsTransaction} hover={false} striped={true} page='patienttransact' />
     </UserSidebar>
   )
 }

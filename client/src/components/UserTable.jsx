@@ -15,6 +15,7 @@ const UserTable = ({
 }) => {
   const location = useLocation();
   const userpath = location.pathname.includes('/nurse/schedule')
+  const adminpath = location.pathname.includes('/admin/schedule')
   const getCaps = (head, field, path) => {
     if (head) return head.toUpperCase();
     return field.toUpperCase();
@@ -29,7 +30,7 @@ const UserTable = ({
                 columns.map((head, index1) => (
                   <th key={index1} >{getCaps(head.header, head.field)}</th>
                 ))}
-                {onClick && <th key={1000} >Action</th>}
+                {(page || onClick) && <th key={1000} >Action</th>}
             </tr>
           </thead>
           <tbody>
@@ -49,11 +50,15 @@ const UserTable = ({
                         </td>
                       ))}
 
-                      {userpath && page === 'schedule' &&
+                      {(userpath || adminpath) && page === 'schedule' &&
                         <td className="text-center">
                         <Button onClick={() => action.update(row)}>UPDATE</Button>
                         {row?.appointment_status==='completed' && <Button onClick={() => action.result({...row,path:"transaction"})}>Result</Button>}
                         </td>
+                      }
+
+                      {
+                        page === 'patienttransact' && <Button onClick={() => action(row)}>Download</Button>
                       }
                     </tr>
                   ) : (
@@ -66,6 +71,14 @@ const UserTable = ({
                           {row[col.field]}
                         </td>
                       ))}
+                      
+                        {
+                          page === 'patienttransact' && (
+                           <td style={{ height: '60px' }} key={row}>
+                           <Button onClick={() => action(row)}>Download</Button>
+                          </td>)
+                        }
+                      
                     </tr>
                   )}</>
               ))) : ''

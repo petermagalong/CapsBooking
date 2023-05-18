@@ -328,4 +328,16 @@ router.post("/createUser", async (req, res) => {
   res.status(400).send({ status: false, message: "insert failed" });
 });
 
+router.get(
+  `/getAllUser`,
+  tryCatch(async (req, res) => {
+    const response = await PatientService.getAllUser();
+
+    res.status(200).send({
+      status: response,
+      message: "Success",
+    });
+  })
+);
+
 module.exports = router;

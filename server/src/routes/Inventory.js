@@ -25,6 +25,18 @@ router.get(
 );
 
 router.get(
+  `/getAllInventoryItems`,
+  tryCatch(async (req, res) => {
+    const response = await InventoryService.getInventory();
+
+    res.status(200).send({
+      status: response,
+      message: "Success",
+    });
+  })
+);
+
+router.get(
   `/getPatientsAppointmentLogsDetails`,
   tryCatch(async (req, res) => {
     const { id } = req.query;
@@ -32,6 +44,18 @@ router.get(
     const response = await PatientService.getPatientLogs({
       id,
     });
+
+    res.status(200).send({
+      status: response,
+      message: "Success",
+    });
+  })
+);
+
+router.get(
+  `/getAllSupplier`,
+  tryCatch(async (req, res) => {
+    const response = await InventoryService.getAllSupplier();
 
     res.status(200).send({
       status: response,

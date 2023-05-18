@@ -122,6 +122,20 @@ module.exports = {
   },
 
   //GET
+  getAllUser: async () => {
+    try {
+      const query = `SELECT * ,
+      CONCAT(first_name, " ",middle_name," ", last_name ) as full_name, 
+      "" as password
+      FROM tbl_user ;`;
+      console.log(query);
+      const result = await Connection(query);
+
+      return result;
+    } catch (err) {
+      return [];
+    }
+  },
 
   getPatientInfoByUserId: async (params) => {
     try {

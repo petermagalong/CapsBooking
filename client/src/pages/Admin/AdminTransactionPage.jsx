@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 import { getInventoryItems, getPatientLogsItems } from '../../services/inventory'
 import { createPatientTransactions, getPatientTransactions } from '../../services/transaction'
 
-export default function NurseTransactionPage() {
+export default function AdminTransactionPage() {
   const { id } = useParams();
 
   const [file, setFile] = useState(null);

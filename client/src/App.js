@@ -27,6 +27,8 @@ import ClerkInventory from "./pages/Clerk/ClerkInventory";
 import ClerkSupply from "./pages/Clerk/ClerkSupply";
 import NurseLogsPage from "./pages/Nurse/NurseLogsPage";
 import NurseTransactionPage from "./pages/Nurse/NurseTransactionPage";
+import AdminLogsPage from "./pages/Admin/AdminLogsPage";
+import AdminTransactionPage from "./pages/Admin/AdminTransactionPage";
 function App() {
   let location = useLocation();
   const userPage = location.pathname.includes("/user");
@@ -108,11 +110,16 @@ function App() {
         {/* ADMIN */}
         <Route path="/admin" element={<AdminHomePage />} />
         <Route path="/admin/home" element={<AdminHomePage />} />
+        <Route path="/admin/logs/:id" element={<AdminLogsPage />} />
+        <Route
+          path="/admin/transaction/:id"
+          element={<AdminTransactionPage />}
+        />
         <Route
           path="/admin/user-management"
           element={<AdminManagementPage />}
         />
-        <Route path="//admin/schedules" element={<AdminSchedulePage />} />
+        <Route path="/admin/schedules" element={<AdminSchedulePage />} />
         {/* CLERK */}
         <Route path="/clerk" element={<ClerkInventory />} />
         <Route path="/clerk/inventory-items" element={<ClerkInventory />} />
