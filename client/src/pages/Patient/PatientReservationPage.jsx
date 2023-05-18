@@ -86,10 +86,10 @@ export default function PatientReservationPage() {
               />
             </Stack>
           </Col>
-          <Col md={6} >
-            <Stack >
+          <Col md={6}>
+            <Stack style={{ display: 'flex', justifyContent: 'center' }} >
               <Button className='homePageButton'
-                style={{ whiteSpace: 'nowrap', width: '550px', height: '80px' }}
+                style={{ whiteSpace: 'nowrap', width: '550px', height: '80px', alignSelf: 'center' }}
                 variant="primary" onClick={handleShow}
                 disabled={getPatientAppointment?.status.length > 0}>
                 {
@@ -102,15 +102,14 @@ export default function PatientReservationPage() {
               </Button>
               {
                 getPatientAppointment?.status && getPatientAppointment?.status.length > 0 ? (
-                  <>
-                    Note: <h5 style={{ fontWeight: 400 }}>the first to arrive will be the first to have service provided</h5>
-                    <p>Reserved Date : {getPatientAppointment.status[0].appointment_date}</p>
-                    <p>Appointment Type : {getPatientAppointment.status[0].appointment_type}</p>
-                    <p>Appointment Status : {getPatientAppointment.status[0].appointment_status}</p>
-                  </>
+                  <Stack className='stackReservation' style={{ padding: '20px 30px', marginTop: '20px', border: '1px solid black', borderRadius: '10px' }}>
+                    <p><b>Reserved Date :</b> {getPatientAppointment.status[0].appointment_date}</p>
+                    <p><b>Appointment Type :</b> {getPatientAppointment.status[0].appointment_type}</p>
+                    <p><b>Appointment Status :</b> {getPatientAppointment.status[0].appointment_status}</p>
+                    <p style={{ fontWeight: 700, textTransform: 'uppercase', textAlign: 'center', marginTop: '10px', color: 'Red', fontSize: '14px', textDecoration: 'underline' }}>*the first to arrive will be the first to have service provided*</p>
+                  </Stack>
                 ) : ""
               }
-
               <Card>
               </Card>
             </Stack>

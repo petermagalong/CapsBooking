@@ -309,7 +309,7 @@ module.exports = {
         FROM tbl_user
         INNER JOIN tbl_patient ON tbl_user.userId = tbl_patient.user_id
         INNER JOIN tbl_appointment ON tbl_patient.patientId = tbl_appointment.patient_id
-        INNER JOIN tbl_doctor ON tbl_doctor.doctorId = tbl_appointment.doctor_id `;
+        LEFT JOIN tbl_doctor ON tbl_doctor.doctorId = tbl_appointment.doctor_id `;
 
       if (filterBystatus && filterBystatus !== "All") {
         query += ` Where tbl_appointment.appointment_status = '${filterBystatus}' `;
