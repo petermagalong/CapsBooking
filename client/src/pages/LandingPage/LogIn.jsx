@@ -49,6 +49,7 @@ function LogIn() {
     if (status === 200) {
       setFormErrors({})
       localStorage.setItem("userId", data.status.userId)
+      localStorage.setItem("bday", data.status.birthday)
       localStorage.setItem("role", data.status.role)
       localStorage.setItem("isLoggedIn", true)
       console.log(status, "gg")

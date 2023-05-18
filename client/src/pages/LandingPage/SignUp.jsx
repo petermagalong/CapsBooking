@@ -3,6 +3,7 @@ import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import "./styles.css";
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import { registerPatient } from '../../services/accounts';
+import moment from 'moment';
 
 export default function SignUp() {
   const initialValue = {
@@ -23,18 +24,18 @@ export default function SignUp() {
     ec_name: "",
     ec_contact_details: "",
     eaddress: "",
-    terms_and_condition:false,
+    terms_and_condition: false,
   }
   const [formValues, setFormvalues] = useState(initialValue);
   const [formErrors, setFormErrors] = useState({})
   const [isSubmit, setSubmit] = useState()
   const navigate = useNavigate();
   const handleChange = (e) => {
-    const { name, value ,type, checked} = e.target;
+    const { name, value, type, checked } = e.target;
     const newValue = type === 'checkbox' ? checked : value;
 
-      setFormvalues({ ...formValues, [name]: newValue })
-    
+    setFormvalues({ ...formValues, [name]: newValue })
+
   }
 
   const handleKeyPress = (event) => {
@@ -46,9 +47,9 @@ export default function SignUp() {
     }
   };
 
-  const handlesSubmit =async (e) => {
+  const handlesSubmit = async (e) => {
     e.preventDefault()
-    console.log(formValues,'formValues')
+    console.log(formValues, 'formValues')
 
     const {
       first_name,
@@ -91,20 +92,26 @@ export default function SignUp() {
       ec_address,
       terms_and_condition: terms_and_condition ? 1 : 0,
     }
-   
-    // setFormErrors(validate(formValues));
-    const {data, status} = await registerPatient(payload);
-
-    
-    setSubmit(true)
-
-    if(status === 200){
-      navigate('Login')
+    const setAge = moment().diff(birthday, 'years');
+    if (setAge < 5) {
+      setFormErrors({ ...formErrors, message: 'User must be 5 years old and above' })
     }
-    else {
-      setFormErrors({...validate(formValues),message:data.message});
+    if (setAge > 100) {
+      setFormErrors({ ...formErrors, message: 'User must be 100 years old and below' })
+    }
+    if (setAge >= 5 && setAge <= 100) {
+      const { data, status } = await registerPatient(payload);
+      setSubmit(true)
+      if (status === 200) {
+        navigate('Login')
+      }
+      else {
+        setFormErrors({ ...validate(formValues), message: data.message });
+      }
     }
   }
+
+
   const validate = (values) => {
     const errors = {};
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
@@ -196,21 +203,16 @@ export default function SignUp() {
             <Row style={{ width: '100%' }} fluid>
               <Col>
                 <h5 style={{ color: 'white' }}>ContactNumber:</h5>
-                <Form.Control style={{ height: '50px' }} 
-                type="tel" maxLength="11" 
-                name='contact_number' value={formValues.contact_number} 
-                onKeyPress={handleKeyPress}
-                onChange={handleChange} 
-                placeholder="Enter phone number"
-                pattern="[0-9]*"
+                <Form.Control style={{ height: '50px' }}
+                  type="tel" maxLength="11"
+                  name='contact_number' value={formValues.contact_number}
+                  onKeyPress={handleKeyPress}
+                  onChange={handleChange}
+                  placeholder="Enter phone number"
+                  pattern="[0-9]*"
                 />
                 <p style={{ color: 'red' }}>{formErrors.number}</p>
               </Col>
-              {/* <Col>
-                <h5 style={{ color: 'white' }}> Role:</h5>
-                <Form.Control style={{ height: '50px' }} type="text" name='role' value={formValues.role} onChange={handleChange} />
-                <p style={{ color: 'red' }}>{formErrors.role}</p>
-              </Col> */}
               <Col>
                 <h5 style={{ color: 'white' }}>Birth Date:</h5>
                 <Form.Control style={{ height: '50px' }} type="date" name='birthday' min={minDate} max={minDate} value={formValues.birthday} onChange={handleChange} />
@@ -219,8 +221,8 @@ export default function SignUp() {
               <Col>
                 <h5 style={{ color: 'white' }}>Sex:</h5>
                 <Form.Select size="lg" name='sex' onChange={handleChange} value={formValues.sex} >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
                 </Form.Select>
                 <p style={{ color: 'red' }}>{formErrors.sex}</p>
               </Col>
@@ -300,7 +302,7 @@ export default function SignUp() {
             </Row>
             {/* 9th FORM  (TERMS CONDITION)  */}
             <Form.Check style={{ color: '#e6c78a', marginBottom: '30px' }} type="checkbox" name='terms_and_condition' checked={formValues.terms_and_condition} onChange={handleChange} label="TERMS AND CONDITION" />
-              <p style={{ color: 'red' }}> {formErrors.message}</p>
+            <p style={{ color: 'red' }}> {formErrors.message}</p>
             <Row style={{ width: '100%', justifyContent: 'center' }} fluid>
               <Button
                 // as={Link} to={"/LogIn"}

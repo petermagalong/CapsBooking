@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import UserSidebar from '../../components/UserSidebar'
 import './patient.css'
-import { Button, Card, Col, Dropdown, Form, Modal, Row, Stack } from 'react-bootstrap';
+import { Button, Card, Col, Dropdown, Form, ListGroup, Modal, Row, Stack } from 'react-bootstrap';
 import moment from 'moment';
 import { createPatientAppointment, getAppointmentCountByDay, getPatientsAppointment } from '../../services/accounts';
 import { useEffect } from 'react';
+import TermsAndCondition from './TermsAndCondition';
 
 export default function PatientReservationPage() {
   const [value, onChange] = useState(new Date());
@@ -19,10 +20,24 @@ export default function PatientReservationPage() {
   const handleClose = () => setShow(false);
   const termsClose = () => IssetShow(false);
   const handleShow = () => setShow(true);
-
-  const items = ['Overseas Pre-employment', 'Complete Laboratoty Diagnostic', 'Covid-19 Testing', 'Drug Test', 'X-ray']
   const [selectedItem, setSelectedItem] = useState("");
   const [errorMessage, setErrorMessage] = useState({ message: "", status: "" });
+  const [isAge, setAges] = useState([])
+  const handleValidate = () => {
+    const age = localStorage.getItem('bday')
+
+    const userAge = moment().diff(age, 'years')
+    console.log(userAge)
+    let item = []
+
+    if (userAge >= 18 && userAge <= 45) {
+      item = ['Local Employment', 'Overseas Pre-employment', 'Complete Laboratoty Diagnostic', 'Covid-19 Testing', 'Drug Test', 'X-ray']
+    }
+    else {
+      item = ['Overseas Pre-employment', 'Complete Laboratoty Diagnostic', 'Covid-19 Testing', 'Drug Test', 'X-ray']
+    }
+    setAges(item);
+  }
 
   const handleModal = () => {
     setCheckbox(false)
@@ -32,6 +47,7 @@ export default function PatientReservationPage() {
   useEffect(() => {
     getAppointment()
     checkAvailableSlot(value)
+    handleValidate()
   }, [value, appointmentCrete])
 
   const getAppointment = async () => {
@@ -61,12 +77,12 @@ export default function PatientReservationPage() {
       setAppointmentcreate(true)
       handleClose()
     }
-    console.log(result)
   }
   const tileDisabled = () => {
     return true;
   };
-  console.log(getPatientAppointment, "getPatientAppointment.length")
+  const twoMonthsAgo = new Date();
+  twoMonthsAgo.setMonth(twoMonthsAgo.getMonth() + 2);
   return (
     <>
       <UserSidebar>
@@ -80,7 +96,7 @@ export default function PatientReservationPage() {
                 onChange={onChange}
                 value={value}
                 minDate={new Date()}
-                // tileDisabled={tileDisabled}
+                maxDate={twoMonthsAgo}
                 tileDisabled={getPatientAppointment?.status.length > 0 ? tileDisabled : ({ date, view }) =>
                   ((view === 'month' && date.getDay() === 0) || date.getDay() === 6)}
               />
@@ -102,12 +118,24 @@ export default function PatientReservationPage() {
               </Button>
               {
                 getPatientAppointment?.status && getPatientAppointment?.status.length > 0 ? (
-                  <Stack className='stackReservation' style={{ padding: '20px 30px', marginTop: '20px', border: '1px solid black', borderRadius: '10px' }}>
-                    <p><b>Reserved Date :</b> {getPatientAppointment.status[0].appointment_date}</p>
-                    <p><b>Appointment Type :</b> {getPatientAppointment.status[0].appointment_type}</p>
-                    <p><b>Appointment Status :</b> {getPatientAppointment.status[0].appointment_status}</p>
-                    <p style={{ fontWeight: 700, textTransform: 'uppercase', textAlign: 'center', marginTop: '10px', color: 'Red', fontSize: '14px', textDecoration: 'underline' }}>*the first to arrive will be the first to have service provided*</p>
-                  </Stack>
+                  <>
+                    <Stack className='stackReservation' style={{ padding: '20px 30px', marginTop: '10px', border: '1px solid black', borderRadius: '10px' }}>
+                      <p className='reservationHeader'>One health medical Laboratory Inc</p>
+                      <p style={{ fontSize: '11px', marginTop: '-20px', textAlign: 'center', color: '#414040', fontWeight: '500' }}>One Masangkay Place Building, 1420 G. Masangkay Street, City of Manila, Metro Manila</p>
+                      <p><b>Reserved Date :</b> {getPatientAppointment.status[0].appointment_date}</p>
+                      <p><b>Appointment Type :</b> {getPatientAppointment.status[0].appointment_type}</p>
+                      <p><b>Appointment Status :</b> {getPatientAppointment.status[0].appointment_status}</p>
+                      <p style={{ fontWeight: 700, textTransform: 'uppercase', textAlign: 'center', marginTop: '10px', color: 'Red', fontSize: '14px', textDecoration: 'underline' }}>*the first to arrive will be the first to have service provided*</p>
+                    </Stack>
+                    <Stack className='stackReservation' style={{ padding: '20px 30px', marginTop: '10px', border: '1px solid black', borderRadius: '10px' }}>
+                      <p style={{ fontWeight: '600', color: 'red' }}>REMINDERS:</p>
+                      <ListGroup as="ol" numbered>
+                        <ListGroup.Item as="li">bring identification documents such as ID's, PWD Card, senior citizen identification card</ListGroup.Item>
+                        <ListGroup.Item as="li">Bring your own Ballpen</ListGroup.Item>
+                        <ListGroup.Item as="li" style={{ display: 'flex' }}>{' '}<p style={{ color: 'red' }}> Always wear facemask within the facility!</p></ListGroup.Item>
+                      </ListGroup>
+                    </Stack>
+                  </>
                 ) : ""
               }
               <Card>
@@ -143,7 +171,7 @@ export default function PatientReservationPage() {
                     {selectedItem}
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
-                    {items.map((item) => (
+                    {isAge.map((item) => (
                       <Dropdown.Item onClick={() => setSelectedItem(item)}>
                         {item}
                       </Dropdown.Item>
@@ -154,11 +182,9 @@ export default function PatientReservationPage() {
               <Row className='rowModalTitle'>
                 <Col md={10} style={{ padding: '10px', height: '50px' }}>
                   <Form.Check style={{ color: 'black', marginBottom: '30px', fontWeight: 500 }}
-                    // as={Button}
                     type="checkbox"
                     name='terms_and_condition'
                     onClick={handleModal}
-                    // checked={formValues.terms_and_condition} onChange={handleChange} 
                     label="TERMS AND CONDITION" />
                 </Col>
               </Row>
@@ -166,9 +192,6 @@ export default function PatientReservationPage() {
           </Modal.Body>
           <Modal.Footer style={{ width: '700px', height: '60px', padding: '0px 15px' }}>
             <p style={{ color: 'red' }}>{errorMessage.message}</p>
-            {/* <Button variant="danger" onClick={handleClose}>
-            Cancel
-          </Button> */}
             { }
             <Button style={{ width: '200px', textTransform: 'uppercase', fontWeight: 500 }} variant="primary" disabled={checkbox} onClick={handleBookAppointment}>
               Set Appointment
@@ -178,16 +201,16 @@ export default function PatientReservationPage() {
         </Modal>
 
         <Modal show={isshow} onHide={termsClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Header style={{ backgroundColor: '#3C1220' }} closeButton>
+            <Modal.Title style={{ color: 'white', textAlign: 'center' }} >TERMS AND CONDITION</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+          <Modal.Body>
+            <TermsAndCondition />
+          </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={handleClose}>
-              Save Changes
+            <p>By booking an appointment with us, you acknowledge that you have read, understood, and agree to be bound by these terms and conditions.</p>
+            <Button variant="primary" onClick={termsClose}>
+              I Understand
             </Button>
           </Modal.Footer>
         </Modal>

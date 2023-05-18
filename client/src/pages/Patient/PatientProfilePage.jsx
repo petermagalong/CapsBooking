@@ -104,6 +104,9 @@ export default function PatientProfilePage() {
       file_path: user.file_path || data.file_path,
     }
     const { res, status } = await updatePatientDetails(payload);
+    if (status === 200 && user.birthday !== data.birthday) {
+      localStorage.setItem('bday', payload.birthday)
+    }
     if (status !== 200) {
       alert(res.message)
     }
