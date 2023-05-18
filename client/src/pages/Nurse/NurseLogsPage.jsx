@@ -22,6 +22,7 @@ export default function NurseLogsPage() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleChange = (e) => {
+    
     const { name, value ,type, checked} = e.target;
     const newValue = type === 'checkbox' ? checked : value;
       setFormvalues({ ...formValues, [name]: newValue })

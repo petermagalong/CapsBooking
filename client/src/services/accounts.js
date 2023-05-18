@@ -135,3 +135,14 @@ export const updatePatientDetails = async (payload) => {
 
   return { res: data.data, status: data.status };
 };
+
+export const updatePatientAppointment = async (payload) => {
+  const { doctor_id, appointment_status } = payload;
+  const data = await fetchData(
+    `/nurse/getPatientsAppointment?id=${payload.appointmentId}`,
+    "put",
+    { doctor_id, appointment_status }
+  );
+
+  return { res: data.data, status: data.status };
+};

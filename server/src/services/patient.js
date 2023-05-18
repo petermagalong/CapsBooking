@@ -4,6 +4,21 @@ const fs = require("fs");
 
 module.exports = {
   //POST
+  createPatientTransactionResult: async (params) => {
+    try {
+      const { appointment_id, test, patient_status, result } = params;
+
+      let query = `INSERT INTO 
+        tbl_transaction VALUES (null,'${appointment_id}',NOW(),'${test}','${patient_status}','${result}') `;
+
+      console.log(query, "getPatientTransactionResult");
+      await Connection(query);
+
+      return true;
+    } catch (err) {
+      return false;
+    }
+  },
   changePassword: async (params) => {
     try {
       const { id, password } = params;
@@ -217,6 +232,26 @@ module.exports = {
     }
   },
 
+  getPatientTransactionResult: async (params) => {
+    try {
+      const { id } = params;
+
+      let query = `SELECT 
+       tbl_transaction.* ,
+       DATE_FORMAT(date,'%Y-%m-%d') as date
+       FROM tbl_transaction 
+       where appointment_id = '${id}' `;
+
+      console.log(query, "getPatientTransactionResult");
+      const result = await Connection(query);
+
+      console.log(result, "getPatientTransactionResult");
+      return result;
+    } catch (err) {
+      return [];
+    }
+  },
+
   getPatientAppointmentByPatientId: async (params) => {
     try {
       const { id } = params;
@@ -237,6 +272,24 @@ module.exports = {
       return [];
     }
   },
+
+  updateAppointmentByAppointmentId: async (payload) => {
+    try {
+      const { id, doctor_id, appointment_status } = payload;
+
+      let query = `Update  tbl_appointment
+      set doctor_id =${doctor_id} ,
+       appointment_status ='${appointment_status}' 
+      where appointmentId =${id}
+      `;
+      console.log(query, "query");
+      await Connection(query);
+
+      return true;
+    } catch (err) {
+      return false;
+    }
+  },
   getPatientAppointment: async (params) => {
     try {
       const { search, filterBystatus } = params;
@@ -245,9 +298,13 @@ module.exports = {
         // `SELECT tbl_appointment.* ,
 
         ` SELECT  tbl_appointment.*,
+        DATE_FORMAT(tbl_appointment.appointment_date,'%Y-%m-%d') as appointment_date ,
         CONCAT(tbl_doctor.first_name, ' ', tbl_doctor.middle_name, ',', tbl_doctor.last_name) as doctor_name,
         tbl_doctor.specialization,
         tbl_doctor.status,
+        tbl_patient.ec_name, 
+        tbl_patient.ec_contact_details, 
+        tbl_patient.ec_address, 
         CONCAT(tbl_user.first_name, ' ', tbl_user.middle_name, ' ', tbl_user.last_name) AS patient_name
         FROM tbl_user
         INNER JOIN tbl_patient ON tbl_user.userId = tbl_patient.user_id

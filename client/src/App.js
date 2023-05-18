@@ -26,6 +26,7 @@ import ClerkIndex from "./pages/Clerk/ClerkIndex";
 import ClerkInventory from "./pages/Clerk/ClerkInventory";
 import ClerkSupply from "./pages/Clerk/ClerkSupply";
 import NurseLogsPage from "./pages/Nurse/NurseLogsPage";
+import NurseTransactionPage from "./pages/Nurse/NurseTransactionPage";
 function App() {
   let location = useLocation();
   const userPage = location.pathname.includes("/user");
@@ -100,6 +101,10 @@ function App() {
         <Route path="/nurse/schedule" element={<NurseSchedulePage />} />
         <Route path="/nurse/doctors-on-board" element={<NurseBoardPage />} />
         <Route path="/nurse/logs/:id" element={<NurseLogsPage />} />
+        <Route
+          path="/nurse/transaction/:id"
+          element={<NurseTransactionPage />}
+        />
         {/* ADMIN */}
         <Route path="/admin" element={<AdminHomePage />} />
         <Route path="/admin/home" element={<AdminHomePage />} />

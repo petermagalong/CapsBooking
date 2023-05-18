@@ -154,3 +154,11 @@ export const PatientLogscolumns = [
   { field: "list", header: "Item" },
   { field: "patientLogDateTime", header: "Date" },
 ];
+
+export const PatientTransactioncolumns = [
+  { field: "transactionId", header: "transactionId" },
+  { field: "date", header: "date" },
+  { field: "test", header: "Test" },
+  { field: "status", header: "Status" },
+  { field: "result", header: "Result" },
+];

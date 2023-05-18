@@ -9,7 +9,9 @@ const UserTable = ({
   hover = true,
   striped = true,
   onClick = null,
-  openLog = null
+  action=null,
+  openLog = null,
+  page=''
 }) => {
   const location = useLocation();
   const userpath = location.pathname.includes('/nurse/schedule')
@@ -27,6 +29,7 @@ const UserTable = ({
                 columns.map((head, index1) => (
                   <th key={index1} >{getCaps(head.header, head.field)}</th>
                 ))}
+                {onClick && <th key={1000} >Action</th>}
             </tr>
           </thead>
           <tbody>
@@ -36,18 +39,21 @@ const UserTable = ({
                   {onClick !== null ? (
 
                     <tr
-                      key={index2 + row + 'asd'}
-                      onClick={() => onClick(row)}
+                      key={index2 + row.toString() + 'asd'}
+                      
                       className={`${hover && "hover"} ${striped && "striped"}`}
                     >
                       {columns.map((col, index) => (
-                        <td style={{ height: '60px' }} key={index}>
+                        <td style={{ height: '60px' }} key={index} onClick={() => onClick({...row,path:page === 'schedule' && "logs"})} >
                           {row[col.field]}
                         </td>
                       ))}
 
-                      {userpath &&
-                        <Button>UPDATE</Button>
+                      {userpath && page === 'schedule' &&
+                        <td className="text-center">
+                        <Button onClick={() => action.update(row)}>UPDATE</Button>
+                        {row?.appointment_status==='completed' && <Button onClick={() => action.result({...row,path:"transaction"})}>Result</Button>}
+                        </td>
                       }
                     </tr>
                   ) : (
