@@ -38,6 +38,11 @@ export default function PatientTransacPage() {
     setFilterByStatus(value)
   }
 
+  const handleDownload = async (data) => {
+    console.log(data, "ggggwoasdasdad")
+    const result = `http://localhost:3001/accounts/download/${data.result}`
+    window.location.href = result;
+  }
   useEffect(() => {
     renderTransactionData()
   }, [startDate, endDate, filterByStatus])
@@ -83,7 +88,7 @@ export default function PatientTransacPage() {
           </Col>
         </Row>
       </Form>
-      <UserTable data={transactionData.status} columns={columnsTransaction} hover={false} striped={true} page='patienttransact' />
+      <UserTable data={transactionData.status} columns={columnsTransaction} hover={false} striped={true} page='patienttransact' action={handleDownload} />
     </UserSidebar>
   )
 }
