@@ -64,4 +64,18 @@ router.get(
   })
 );
 
+router.post(
+  `/createInventoryItem`,
+  tryCatch(async (req, res) => {
+    console.log(req.body, 'bitch')
+    const response = await InventoryService.createInventoryItem(req.body);
+
+
+    res.status(200).send({
+      status: response,
+      message: 'success'
+    })
+  })
+)
+
 module.exports = router;

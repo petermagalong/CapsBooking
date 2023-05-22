@@ -158,3 +158,12 @@ export const getAllUser = async () => {
 
   return { res: data.data, status: data.status };
 };
+
+export const createInventoryItem = async (payload) => {
+  const data = await fetchData(`/inventory/createInventoryItem`, "post", payload);
+  return { res: data.data, status: data.status };
+};
+
+
+
+

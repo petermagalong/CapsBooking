@@ -142,7 +142,6 @@ export const Appointmentcolumns = [
   { field: "appointment_status", header: "Status" },
   { field: "doctor_name", header: "Doctor" },
 ];
-
 export const Doctorscolumns = [
   { field: "doctor_name", header: "Doctors Name" },
   { field: "specialization", header: "Specialization" },

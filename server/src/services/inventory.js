@@ -62,4 +62,24 @@ module.exports = {
       return [];
     }
   },
+  createInventoryItem: async (payload) => {
+    try {
+      console.log(payload)
+      const { supplierId, deliveryDate, quantity, expirationDate, list } = payload
+      const query = `
+    INSERT INTO tbl_inventory(inventoryId, supplierId, deliveryDate, quantity, expirationDate, list) 
+    VALUES (null,
+      '${supplierId}',
+      '${deliveryDate}',
+      ${quantity},
+      '${expirationDate}',
+      '${list}')`
+
+      const result = await Connection(query);
+      return result;
+    } catch (err) {
+      return [];
+    }
+  }
 };
+
