@@ -150,7 +150,7 @@ function NurseSchedulePage() {
           <Container>
       <Row>
         <Col>Status : 
-        <Form.Select size="lg" name='appointment_status' onChange={handleChange} value={patientDetails.appointment_status} disabled={patientDetails.appointment_status==='completed'?true:false}>
+        <Form.Select size="lg" name='appointment_status' onChange={handleChange} value={patientDetails.appointment_status} disabled>
         <option value="pending">Pending</option>
         <option value="approve">Approve</option>
         <option value="inprogress">Inprogress</option>

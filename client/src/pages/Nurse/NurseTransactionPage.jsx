@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import UserSidebar from '../../components/UserSidebar'
 import UserTable from '../../components/UserTable'
 import { Doctorscolumns, PatientLogscolumns, PatientTransactioncolumns, columns, tableData } from '../../CapsConstant'
-import { createPatientLogs, download, getActiveDoctors, getPatientsAppointment, getPatientsAppointments } from '../../services/accounts'
+import { createPatientLogs, download, getActiveDoctors, getPatientAppointmentDetails, getPatientsAppointment, getPatientsAppointments } from '../../services/accounts'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Col, Dropdown, Form, Row, Toast } from 'react-bootstrap'
@@ -13,6 +13,19 @@ import { createPatientTransactions, getPatientTransactions } from '../../service
 export default function NurseTransactionPage() {
   const { id } = useParams();
 
+  const initialData = {
+    "transactionDetails": [],
+    "appointmentId": id,
+    "appointment_date": "",
+    "patient_id": 0,
+    "doctor_id": 0,
+    "appointment_type": "",
+    "code": "",
+    "appointment_status": "",
+    "sex": ""
+}
+
+const [tansactionData , setTransactionData ] = useState(initialData)
   const [file, setFile] = useState(null);
   const [test, setTest] = useState('');
   const [patient_status, setpatient_status] = useState('');
@@ -52,9 +65,17 @@ export default function NurseTransactionPage() {
     const result = await getPatientTransactions(id)
     setPatientTransaction(result.data)
   }
+
+  const handlePatientTransactionDetails = async () => {
+    const result = await getPatientAppointmentDetails(id)
+    if(result.data && result.data.status === 200) setTransactionData(result.data.data.status)
+  }
   useEffect(() => {
     handleSetPatientTransactionValue()
+    handlePatientTransactionDetails()
   }, [])
+
+  console.log(tansactionData,"tansactionDatatansactionData")
   return (
     <UserSidebar>
       <Button variant="primary" onClick={handleShow}>
@@ -76,13 +97,19 @@ export default function NurseTransactionPage() {
           <Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Test</Form.Label>
-              <Form.Control
+              <Form.Select size="lg" name='test' >
+                <option value="pending">Pending</option>
+                <option value="approve">Approve</option>
+                <option value="inprogress">Inprogress</option>
+                <option value="completed">Completed</option>
+              </Form.Select>
+              {/* <Form.Control
                 type="text"
                 name="test"
                 placeholder="0"
                 onChange={(e) => setTest(e.target.value)}
                 autoFocus
-              />
+              /> */}
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Status</Form.Label>

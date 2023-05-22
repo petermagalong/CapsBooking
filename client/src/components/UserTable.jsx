@@ -52,8 +52,8 @@ const UserTable = ({
 
                       {(userpath || adminpath) && page === 'schedule' &&
                         <td className="text-center">
-                        <Button onClick={() => action.update(row)}>UPDATE</Button>
-                        {row?.appointment_status==='completed' && <Button onClick={() => action.result({...row,path:"transaction"})}>Result</Button>}
+                        <Button onClick={() => action.update(row)}>Set doctor</Button>
+                        <Button onClick={() => action.result({...row,path:"transaction"})}>{row.appointment_status === 'completed' ? 'Result' : 'View'}</Button>
                         </td>
                       }
 

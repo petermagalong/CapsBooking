@@ -66,6 +66,35 @@ router.get(
 
 // transaction
 router.get(
+  `/getPatientAppointmentDetails`,
+  tryCatch(async (req, res) => {
+    const { appointmentId } = req.query;
+
+    const result = await PatientService.getPatientAppointmentDetails({
+      id: appointmentId,
+    });
+
+    if (result.length < 1 || result === undefined) {
+      res.status(400).send({
+        status: [],
+        message: "Appointment Not Found",
+      });
+      return;
+    }
+
+    const transactionDetails =
+      await PatientService.getPatientAppointmentTransactionDetails({
+        id: appointmentId,
+      });
+
+    const transactions = transactionDetails.map((value) => value.test);
+    res.status(200).send({
+      status: { transactionDetails: transactions, ...result[0] },
+      message: "Success",
+    });
+  })
+);
+router.get(
   `/getPatientTransactions`,
   tryCatch(async (req, res) => {
     const { transactionId } = req.query;
@@ -86,6 +115,10 @@ router.put(
   `/getPatientsAppointment`,
   tryCatch(async (req, res) => {
     const { id } = req.query;
+
+    if (req.body.appointment_status === "pending" && req.body.doctor_id)
+      req.body.appointment_status = "approve";
+
     const { doctor_id, appointment_status } = req.body;
 
     console.log(doctor_id, "filterBystatus", appointment_status);
@@ -94,6 +127,12 @@ router.put(
       doctor_id,
       appointment_status,
     });
+    if (!result) {
+      res.status(400).send({
+        status: result,
+        message: "update failed",
+      });
+    }
 
     res.status(200).send({
       status: result,

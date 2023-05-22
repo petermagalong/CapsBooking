@@ -160,10 +160,18 @@ export const getAllUser = async () => {
 };
 
 export const createInventoryItem = async (payload) => {
-  const data = await fetchData(`/inventory/createInventoryItem`, "post", payload);
+  const data = await fetchData(
+    `/inventory/createInventoryItem`,
+    "post",
+    payload
+  );
   return { res: data.data, status: data.status };
 };
 
-
-
-
+export const getPatientAppointmentDetails = async (param) => {
+  const data = await fetchData(
+    `/nurse/getPatientAppointmentDetails?appointmentId=${param}`,
+    "get"
+  );
+  return { data };
+};

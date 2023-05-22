@@ -51,7 +51,7 @@ export default function NurseLogsPage() {
   return (
     <UserSidebar>
             <Button variant="primary" onClick={handleShow}>
-              Add Patient Logs
+              Add Item
             </Button>
       <UserTable data={patientLogs.status} columns={PatientLogscolumns} hover={true} striped={true} />
 

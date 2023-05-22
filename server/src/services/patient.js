@@ -293,7 +293,7 @@ module.exports = {
 
       let query = `Update  tbl_appointment
       set doctor_id =${doctor_id} ,
-       appointment_status ='${appointment_status}' 
+      appointment_status ='${appointment_status}' 
       where appointmentId =${id}
       `;
       console.log(query, "query");
@@ -347,6 +347,41 @@ module.exports = {
       }
 
       console.log(query);
+
+      const result = await Connection(query);
+      return result;
+    } catch (err) {
+      return [];
+    }
+  },
+
+  getPatientAppointmentDetails: async (params) => {
+    try {
+      const query = `SELECT tbl_appointment.* ,
+       tbl_user.sex 
+       FROM tbl_appointment 
+       INNER JOIN tbl_patient 
+       ON tbl_appointment.patient_id = tbl_patient.patientId
+        INNER JOIN tbl_user 
+        ON tbl_patient.user_id = tbl_user.userId 
+        where tbl_appointment.appointmentId = ${params.id} limit 1`;
+
+      const result = await Connection(query);
+
+      return result;
+    } catch (err) {
+      return false;
+    }
+  },
+
+  getPatientAppointmentTransactionDetails: async (params) => {
+    try {
+      const query = `SELECT 
+      DISTINCT tbl_transaction.test 
+      FROM tbl_transaction 
+      LEFT JOIN tbl_appointment 
+      on tbl_transaction.appointment_id = tbl_appointment.appointmentId 
+      WHERE tbl_transaction.appointment_id = ${params.id} `;
 
       const result = await Connection(query);
       return result;

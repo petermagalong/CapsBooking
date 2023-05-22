@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect } from 'react';
 import Calendar from 'react-calendar';
 import UserSidebar from '../../components/UserSidebar'
 import './patient.css'
 import { Button, Card, Col, Dropdown, Form, ListGroup, Modal, Row, Stack } from 'react-bootstrap';
 import moment from 'moment';
 import { createPatientAppointment, getAppointmentCountByDay, getPatientsAppointment } from '../../services/accounts';
-import { useEffect } from 'react';
 import TermsAndCondition from './TermsAndCondition';
 
 export default function PatientReservationPage() {
